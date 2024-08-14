@@ -109,7 +109,7 @@ export default function App() {
 function EarthIcon() {
   return (
     <span className='app-logo-container'>
-      <img src='earth.svg' alt='Earth Icon' />
+      <img src='/earth.svg' alt='Earth Icon' />
       <h1>HISTORICAL EVENTS</h1>
     </span>
   );
@@ -143,10 +143,12 @@ function ThemeInput({ theme, onSetTheme }) {
       <button onClick={handleButtonClick}>
         <img
           className='icon glass'
-          src='magnifying-glass.svg'
+          src='/magnifying-glass.svg'
           alt='Magnifying glass search icon'
         />
       </button>
+
+      <img src='public/img/cat.jpg' alt='cat'></img>
     </form>
   );
 }

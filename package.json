@@ -1,5 +1,6 @@
 {
-  "name": "influencial",
+  "homepage": "https://lucasamsellem.github.io/historical-events",
+  "name": "historical-events",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
