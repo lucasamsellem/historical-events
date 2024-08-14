@@ -61,7 +61,10 @@ export default function App() {
         <ThemeInput theme={theme} onSetTheme={setTheme} />
 
         <span className='icon favorites-icon' onClick={handleFavorites}>
-          <img src='favorite.svg' alt='Favorite Icon' />
+          <img
+            src={`${process.env.PUBLIC_URL}/favorite.svg`}
+            alt='Favorite Icon'
+          />
           {nonEmptyFavoriteArr && <span>{favoriteEvents.length}</span>}
         </span>
       </header>
@@ -109,7 +112,7 @@ export default function App() {
 function EarthIcon() {
   return (
     <span className='app-logo-container'>
-      <img src='/earth.svg' alt='Earth Icon' />
+      <img src={`${process.env.PUBLIC_URL}/earth.svg`} alt='Earth Icon' />
       <h1>HISTORICAL EVENTS</h1>
     </span>
   );
@@ -143,12 +146,10 @@ function ThemeInput({ theme, onSetTheme }) {
       <button onClick={handleButtonClick}>
         <img
           className='icon glass'
-          src='/magnifying-glass.svg'
+          src={`${process.env.PUBLIC_URL}/magnifying-glass.svg`}
           alt='Magnifying glass search icon'
         />
       </button>
-
-      <img src='public/img/cat.jpg' alt='cat'></img>
     </form>
   );
 }
