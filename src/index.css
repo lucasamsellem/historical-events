@@ -19,6 +19,7 @@
 
 :root {
   --indigo: #5c7cfa;
+  --light-gray: #b2b2b2;
 }
 
 html {
@@ -47,23 +48,89 @@ footer {
   gap: 3.2rem;
 }
 
-footer {
-  margin-bottom: 0;
-}
-
-.favorites-icon {
+.search-container {
   position: relative;
   display: flex;
   align-items: center;
 }
 
-.favorites-icon span {
+.favorite-icon {
+  font-size: 4rem;
+  color: white;
+  transition: all 0.2s;
+}
+
+.search-icon {
+  opacity: 0;
+  font-size: 3rem;
+  color: var(--light-gray);
+  margin-left: -6.5rem;
+  transition: all 0.2s;
+}
+
+/* .search-icon:hover {
+  color: #818181;
+} */
+
+footer {
+  margin-bottom: 0;
+}
+
+button {
+  background: transparent;
+  border: none;
+}
+
+.favorite-icon-container {
+  position: relative;
+}
+
+.favorite-icon-container button {
+  display: flex;
+}
+
+.favorite-count {
   position: absolute;
   top: -5px;
   right: -5px;
   background-color: #ffd43b;
   padding: 0.1em 0.5em;
   border-radius: 50%;
+}
+
+.search-history-list {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  top: 0rem;
+  right: -15rem;
+  background-color: white;
+  color: var(--indigo);
+  gap: 1.6rem;
+  padding: 1em;
+  border-radius: 5px;
+}
+
+.search-history-list li {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+}
+
+.search-history-list li strong {
+  border-right: 1px solid white;
+  padding-right: 1rem;
+  margin-right: 1rem;
+  cursor: pointer;
+}
+
+.search-history-list li strong:hover {
+  text-decoration: underline;
+}
+
+.search-history-list li span {
+  font-size: 1.2rem;
+  font-style: italic;
 }
 
 .app-logo-container {
@@ -96,7 +163,6 @@ li {
 
 form {
   display: flex;
-  justify-content: center;
   gap: 1.6rem;
 }
 
@@ -104,34 +170,24 @@ form input {
   font-size: 1.6rem;
   border-radius: 5px;
   border: none;
-  padding: 0.8em 5em 0.8em 0.8em;
+  padding: 0.8em 5em 0.8em 3em;
 }
 
 form input:focus {
   outline: none;
 }
 
-form button {
-  background-color: transparent;
-  margin-left: -8.5rem;
-  border: none;
-  border-left: 1px solid #ced4da;
-  padding: 0 2rem;
-  cursor: pointer;
-}
-
-.icon {
-  cursor: pointer;
-}
-
 .glass {
-  height: 2.5rem;
-  transform: rotate(-90deg);
+  font-size: 2.4rem;
+  color: var(--light-gray);
+  margin-right: -5rem;
+  cursor: pointer;
 }
 
 .star {
   background: transparent;
   border: none;
+  cursor: pointer;
 }
 
 .eras {
@@ -203,8 +259,17 @@ form button {
 
 /* DYNAMIC */
 
+.pointer {
+  cursor: pointer;
+}
+
 .favorite {
   fill: #ffd43b;
+}
+
+.full-opacity {
+  opacity: 1;
+  cursor: pointer;
 }
 
 /* Responsive Design */
