@@ -19,6 +19,8 @@ export default function App() {
 
   const today = new Date().getFullYear();
 
+  const hasFavorites = favoriteEvents.length > 0;
+
   useEffect(() => {
     async function fetchData() {
       setShowFavorites(false);
@@ -57,8 +59,20 @@ export default function App() {
       }
     }
 
-    if (theme) fetchData();
+    if (!theme) return;
+
+    fetchData();
   }, [theme]);
+
+  // Load search history from localStorage when the app loads
+  useEffect(() => {
+    const storedHistory = localStorage.getItem('searchHistory');
+    const storedFavorites = localStorage.getItem('favoriteEvents');
+
+    if (storedHistory) setSearchHistory(JSON.parse(storedHistory));
+
+    if (storedFavorites) setFavoriteEvents(JSON.parse(storedFavorites));
+  }, []);
 
   return (
     <div className='container'>
@@ -85,6 +99,7 @@ export default function App() {
           favoriteEvents={favoriteEvents}
           showFavorites={showFavorites}
           onShowFavorites={setShowFavorites}
+          hasFavorites={hasFavorites}
         />
       </header>
 
@@ -98,7 +113,7 @@ export default function App() {
             return <p className='unknown-keyword'>Unknown keyword</p>;
           }
 
-          if (showFavorites) {
+          if (showFavorites && hasFavorites) {
             return (
               <FavoriteEventsList
                 favoriteEvents={favoriteEvents}
@@ -147,16 +162,19 @@ function EarthIcon() {
   );
 }
 
-function FavoriteIcon({ favoriteEvents, showFavorites, onShowFavorites }) {
-  const hasFavorites = favoriteEvents.length > 0;
-
+function FavoriteIcon({
+  favoriteEvents,
+  showFavorites,
+  onShowFavorites,
+  hasFavorites,
+}) {
   return (
     <span
       className='favorite-icon-container'
       onClick={() => onShowFavorites(hasFavorites && !showFavorites)}
     >
       <button className={`favorite-icon ${hasFavorites ? 'pointer' : ''}`}>
-        <ion-icon name={`bookmark${!showFavorites ? '-outline' : ''}`} />
+        <ion-icon name={`bookmark${!hasFavorites ? '-outline' : ''}`} />
       </button>
 
       {hasFavorites && (

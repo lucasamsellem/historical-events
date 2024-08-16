@@ -32,9 +32,9 @@ function EventsList({ events, era, today, favoriteEvents, onFavoriteEvents }) {
 function FavoriteEventsList({ favoriteEvents, today, onFavoriteEvents }) {
   return (
     <ul className='events-list'>
-      {favoriteEvents.map((event, index) => (
+      {favoriteEvents.map((event) => (
         <Event
-          key={index}
+          key={event.event}
           event={event.event}
           day={event.day}
           month={event.month}

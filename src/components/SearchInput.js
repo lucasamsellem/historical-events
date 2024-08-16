@@ -18,7 +18,14 @@ function SearchInput({
 
     onSetTheme(inputValue);
 
-    onSearchHistory((prev) => [...prev, { keyword: inputValue, time: now }]);
+    onSearchHistory((prev) => {
+      const updatedHistory = [...prev, { keyword: inputValue, time: now }];
+
+      // Save search history to localStorage whenever it changes
+      localStorage.setItem('searchHistory', JSON.stringify(updatedHistory));
+
+      return updatedHistory;
+    });
   };
 
   return (
@@ -62,6 +69,12 @@ function SearchHistoryList({ searchHistory, onInputValue }) {
   // Put keyword text in search input when clicked on keyword from search history
   const setHistoryKeywordInput = (e) => onInputValue(e.target.innerText);
 
+  const clearSearchHistory = () => {
+    // Empty the array
+    searchHistory.splice(0, searchHistory.length);
+    localStorage.removeItem('searchHistory');
+  };
+
   return (
     <ul className='search-history-list'>
       {searchHistory
@@ -72,6 +85,9 @@ function SearchHistoryList({ searchHistory, onInputValue }) {
           </li>
         ))
         .toReversed()}
+      <button onClick={clearSearchHistory}>
+        <ion-icon name='trash-outline' />
+      </button>
     </ul>
   );
 }

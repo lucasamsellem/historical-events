@@ -147,16 +147,31 @@ form input:focus {
   flex-direction: column;
   top: 7rem;
   right: -3rem;
-  background-color: var(--indigo);
   gap: 1.6rem;
   padding: 1em;
+  max-height: 25rem;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  background-color: var(--indigo);
   border-radius: 5px;
   box-shadow: 0 0 1px rgba(0, 0, 0, 0.31);
+}
+
+.search-history-list button {
+  display: flex;
+  justify-content: center;
+  font-size: 2rem;
+  background-color: white;
+  color: var(--indigo);
+  padding: 0.2em 0;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 .search-history-list li {
   display: grid;
   grid-template-columns: 1fr auto;
+  align-items: center;
 }
 
 .search-history-list li strong {

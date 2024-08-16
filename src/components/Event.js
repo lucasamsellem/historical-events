@@ -10,17 +10,33 @@ export default function Event({
   onFavoriteEvents,
 }) {
   const [isFavorite, setIsFavorite] = useState(
+    // Star still active when in favorite events section
     favoriteEvents.some((fav) => fav.event === event)
   );
 
   const handleFavorite = () => {
     setIsFavorite(!isFavorite);
+
     onFavoriteEvents((prev) => {
+      let updatedFavoriteEvents;
+
       if (prev.some((fav) => fav.event === event)) {
-        return prev.filter((fav) => fav.event !== event);
+        updatedFavoriteEvents = prev.filter((fav) => fav.event !== event);
       } else {
-        return [...prev, { event, day, month, year }];
+        updatedFavoriteEvents = [...prev, { event, day, month, year }];
       }
+
+      // Update localStorage with the new favorites list
+      if (updatedFavoriteEvents.length > 0) {
+        localStorage.setItem(
+          'favoriteEvents',
+          JSON.stringify(updatedFavoriteEvents)
+        );
+      } else {
+        localStorage.removeItem('favoriteEvents');
+      }
+
+      return updatedFavoriteEvents;
     });
   };
 
