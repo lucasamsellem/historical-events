@@ -1,4 +1,6 @@
-export default SearchInput;
+import { useState } from 'react';
+
+export { SearchInput, SearchHistoryIcon, SearchHistoryList };
 
 function SearchInput({
   inputValue,
@@ -15,6 +17,7 @@ function SearchInput({
     });
 
     onSetTheme(inputValue);
+
     onSearchHistory((prev) => [...prev, { keyword: inputValue, time: now }]);
   };
 
@@ -31,5 +34,44 @@ function SearchInput({
         onChange={(e) => onInputValue(e.target.value)}
       />
     </form>
+  );
+}
+
+function SearchHistoryIcon({ searchHistory, onInputValue }) {
+  const [isDropdownVisible, setDropdownVisible] = useState(false);
+
+  const hasHistory = searchHistory.length > 0;
+
+  return (
+    <span onClick={() => setDropdownVisible(!isDropdownVisible)}>
+      <button className={`search-icon ${hasHistory && 'full-opacity'}`}>
+        <ion-icon name='time-outline' />
+      </button>
+
+      {hasHistory && isDropdownVisible && (
+        <SearchHistoryList
+          searchHistory={searchHistory}
+          onInputValue={onInputValue}
+        />
+      )}
+    </span>
+  );
+}
+
+function SearchHistoryList({ searchHistory, onInputValue }) {
+  // Put keyword text in search input when clicked on keyword from search history
+  const setHistoryKeywordInput = (e) => onInputValue(e.target.innerText);
+
+  return (
+    <ul className='search-history-list'>
+      {searchHistory
+        .map((keyword, i) => (
+          <li key={i}>
+            <strong onClick={setHistoryKeywordInput}>{keyword.keyword}</strong>{' '}
+            <span>{keyword.time}</span>
+          </li>
+        ))
+        .toReversed()}
+    </ul>
   );
 }

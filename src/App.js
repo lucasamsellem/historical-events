@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 // COMPONENTS
-import SearchInput from './components/SearchInput';
+import { SearchInput, SearchHistoryIcon } from './components/SearchInput';
 import { EventsList, FavoriteEventsList } from './components/EventsList';
 import Eras from './components/Eras';
 
@@ -56,13 +56,17 @@ export default function App() {
         setIsLoading(false);
       }
     }
+
     if (theme) fetchData();
   }, [theme]);
 
   return (
     <div className='container'>
       <header>
-        <EarthIcon />
+        <span className='title'>
+          <EarthIcon />
+          <h1>HISTORICAL EVENTS</h1>
+        </span>
         <span className='search-container'>
           <SearchInput
             theme={theme}
@@ -127,7 +131,7 @@ export default function App() {
       </main>
 
       <footer>
-        <span>Lucas Amsellem</span>
+        <h2>Lucas Amsellem</h2>
         <EarthIcon />
       </footer>
     </div>
@@ -136,10 +140,11 @@ export default function App() {
 
 function EarthIcon() {
   return (
-    <span className='app-logo-container'>
-      <img src={`${process.env.PUBLIC_URL}/earth.svg`} alt='Earth Icon' />
-      <h1>HISTORICAL EVENTS</h1>
-    </span>
+    <img
+      className='app-logo-container'
+      src={`${process.env.PUBLIC_URL}/earth.svg`}
+      alt='Earth Icon'
+    />
   );
 }
 
@@ -159,46 +164,5 @@ function FavoriteIcon({ favoriteEvents, showFavorites, onShowFavorites }) {
         <span className='favorite-count'>{favoriteEvents.length}</span>
       )}
     </span>
-  );
-}
-
-function SearchHistoryIcon({ searchHistory, onInputValue }) {
-  const [isDropdownVisible, setDropdownVisible] = useState(false);
-
-  const hasHistory = searchHistory.length > 0;
-
-  return (
-    <span
-      className='seach-history-container'
-      onClick={() => setDropdownVisible(!isDropdownVisible)}
-    >
-      <button className={`search-icon ${hasHistory && 'full-opacity'}`}>
-        <ion-icon name='time-outline' />
-      </button>
-
-      {hasHistory && isDropdownVisible && (
-        <SearchHistoryList
-          searchHistory={searchHistory}
-          onInputValue={onInputValue}
-        />
-      )}
-    </span>
-  );
-}
-
-function SearchHistoryList({ searchHistory, onInputValue }) {
-  const setHistoryKeywordInput = (e) => onInputValue(e.target.innerText);
-
-  return (
-    <ul className='search-history-list'>
-      {searchHistory
-        .map((keyword) => (
-          <li>
-            <strong onClick={setHistoryKeywordInput}>{keyword.keyword}</strong>{' '}
-            <span>{keyword.time}</span>
-          </li>
-        ))
-        .toReversed()}
-    </ul>
   );
 }

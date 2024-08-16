@@ -10,6 +10,8 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
 
+/* GENERAL */
+
 * {
   margin: 0;
   padding: 0;
@@ -26,6 +28,19 @@ html {
   font-size: 62.5%;
 }
 
+h1 {
+  font-size: 3rem;
+}
+
+li {
+  list-style-type: none;
+}
+
+button {
+  background: transparent;
+  border: none;
+}
+
 body {
   font-size: 1.6rem;
   color: white;
@@ -36,6 +51,8 @@ body {
   flex-direction: column;
   min-height: 100vh;
 }
+
+/* HEADER & FOOTER */
 
 header,
 footer {
@@ -48,37 +65,62 @@ footer {
   gap: 3.2rem;
 }
 
+.title {
+  display: flex;
+  align-items: center;
+  gap: 2.4rem;
+}
+
 .search-container {
   position: relative;
   display: flex;
   align-items: center;
 }
 
+.search-icon {
+  display: flex;
+  opacity: 0;
+  font-size: 2.4rem;
+  color: var(--light-gray);
+  margin-left: -4.5rem;
+  transition: all 0.2s;
+}
+
+form {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+}
+
+form input {
+  font-size: 1.6rem;
+  border-radius: 5px;
+  border: none;
+  padding: 0.8em 2em 0.8em 4em;
+}
+
+form input:focus {
+  outline: none;
+}
+
+.glass {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.4rem;
+  color: var(--light-gray);
+  margin-right: -6rem;
+  cursor: pointer;
+}
+
+.glass ion-icon {
+  border-right: #bababa88 solid 1px;
+  padding-right: 1rem;
+}
+
 .favorite-icon {
   font-size: 4rem;
   color: white;
   transition: all 0.2s;
-}
-
-.search-icon {
-  opacity: 0;
-  font-size: 3rem;
-  color: var(--light-gray);
-  margin-left: -6.5rem;
-  transition: all 0.2s;
-}
-
-/* .search-icon:hover {
-  color: #818181;
-} */
-
-footer {
-  margin-bottom: 0;
-}
-
-button {
-  background: transparent;
-  border: none;
 }
 
 .favorite-icon-container {
@@ -99,13 +141,13 @@ button {
 }
 
 .search-history-list {
+  z-index: 999;
   position: absolute;
   display: flex;
   flex-direction: column;
-  top: 0rem;
-  right: -15rem;
-  background-color: white;
-  color: var(--indigo);
+  top: 7rem;
+  right: -3rem;
+  background-color: var(--indigo);
   gap: 1.6rem;
   padding: 1em;
   border-radius: 5px;
@@ -114,7 +156,6 @@ button {
 .search-history-list li {
   display: grid;
   grid-template-columns: 1fr auto;
-  align-items: center;
 }
 
 .search-history-list li strong {
@@ -133,25 +174,17 @@ button {
   font-style: italic;
 }
 
-.app-logo-container {
-  display: flex;
-  align-items: center;
-  gap: 2.4rem;
+footer {
+  margin-bottom: 0;
 }
+
+/* MAIN */
 
 main {
   max-width: 130rem;
   margin: 0 auto;
-  padding: 0 3rem;
+  padding: 0 5rem;
   flex: 1;
-}
-
-h1 {
-  font-size: 3rem;
-}
-
-li {
-  list-style-type: none;
 }
 
 .loading,
@@ -159,29 +192,6 @@ li {
   color: #333;
   text-align: center;
   font-weight: 600;
-}
-
-form {
-  display: flex;
-  gap: 1.6rem;
-}
-
-form input {
-  font-size: 1.6rem;
-  border-radius: 5px;
-  border: none;
-  padding: 0.8em 5em 0.8em 3em;
-}
-
-form input:focus {
-  outline: none;
-}
-
-.glass {
-  font-size: 2.4rem;
-  color: var(--light-gray);
-  margin-right: -5rem;
-  cursor: pointer;
 }
 
 .star {
@@ -217,7 +227,7 @@ form input:focus {
 .events-list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 6.4rem;
+  gap: 4.8rem;
   font-size: 1.8rem;
   line-height: 1.5;
   margin: 8rem 0;
@@ -276,20 +286,17 @@ form input:focus {
 
 @media (max-width: 600px) {
   header {
-    padding: 1rem 5rem;
+    padding: 3rem;
   }
-
   main {
-    padding: 0 2rem;
+    padding: 0 3rem;
   }
 }
 
 @media (max-width: 1060px) {
   header,
   footer {
-    padding: 1rem 3rem;
     flex-direction: column;
-    gap: 3.2rem;
   }
 
   .eras {
@@ -297,47 +304,24 @@ form input:focus {
     gap: 3.2rem;
   }
 
-  form {
-    gap: 1.2rem;
-  }
-
-  form input {
-    width: 100%;
+  .search-history-list {
+    top: 7rem;
+    left: 9rem;
+    right: 8rem;
   }
 }
 
 @media (max-width: 37.5em) {
-  header {
-    padding: 1rem;
-  }
-
-  main {
-    padding: 0 1rem;
-  }
-
   .events-list {
     gap: 3.2rem;
   }
 
-  .event {
-    padding: 1rem;
-  }
-
-  .event h5 {
-    font-size: 1rem;
-  }
-
   .date {
-    font-size: 2rem;
+    font-size: 2.4rem;
   }
 
   .unknown-keyword {
     font-size: 1.2rem;
     margin: 2rem 0;
-  }
-
-  .eras button {
-    font-size: 1.6rem;
-    padding: 0.5em 2em;
   }
 }
