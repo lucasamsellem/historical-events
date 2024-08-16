@@ -151,6 +151,7 @@ form input:focus {
   gap: 1.6rem;
   padding: 1em;
   border-radius: 5px;
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.31);
 }
 
 .search-history-list li {
@@ -286,10 +287,14 @@ main {
 
 @media (max-width: 600px) {
   header {
-    padding: 3rem;
+    padding: 2rem;
   }
   main {
     padding: 0 3rem;
+  }
+
+  h1 {
+    font-size: 2rem;
   }
 }
 

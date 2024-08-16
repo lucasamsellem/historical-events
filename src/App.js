@@ -131,7 +131,6 @@ export default function App() {
       </main>
 
       <footer>
-        <h2>Lucas Amsellem</h2>
         <EarthIcon />
       </footer>
     </div>
