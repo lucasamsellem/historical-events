@@ -16,29 +16,38 @@ function SearchInput({
       minute: '2-digit',
     });
 
-    onSetTheme(inputValue);
+    const trimmedInput = inputValue.trim();
 
-    onSearchHistory((prev) => {
-      const updatedHistory = [...prev, { keyword: inputValue, time: now }];
+    // Prevent empty spaces from being pushed to search history
+    if (trimmedInput !== '') {
+      onSetTheme(trimmedInput);
 
-      // Save search history to localStorage whenever it changes
-      localStorage.setItem('searchHistory', JSON.stringify(updatedHistory));
+      onSearchHistory((prev) => {
+        const updatedHistory = [...prev, { keyword: trimmedInput, time: now }];
 
-      return updatedHistory;
-    });
+        // Save search history to localStorage whenever it changes
+        localStorage.setItem('searchHistory', JSON.stringify(updatedHistory));
+
+        return updatedHistory;
+      });
+    }
   };
 
   return (
-    <form>
-      <button className='glass' onClick={handleButtonClick}>
-        <ion-icon name='search-outline' />
+    <form className="flex items-center space-x-2">
+      <button
+        className="z-50 -mr-11 flex border-r-[1px] border-gray-300 pr-2 text-xl text-gray-400"
+        onClick={handleButtonClick}
+      >
+        <ion-icon name="search-outline" />
       </button>
 
       <input
-        type='text'
-        placeholder='Enter a keyword'
+        type="text"
+        placeholder="Enter a keyword"
         value={inputValue}
         onChange={(e) => onInputValue(e.target.value)}
+        className="rounded-md border-none p-3 pl-12 focus:outline-none"
       />
     </form>
   );
@@ -50,9 +59,16 @@ function SearchHistoryIcon({ searchHistory, onInputValue }) {
   const hasHistory = searchHistory.length > 0;
 
   return (
-    <span onClick={() => setDropdownVisible(!isDropdownVisible)}>
-      <button className={`search-icon ${hasHistory && 'full-opacity'}`}>
-        <ion-icon name='time-outline' />
+    <span
+      className="relative"
+      onClick={() => setDropdownVisible(!isDropdownVisible)}
+    >
+      <button
+        className={`-ml-10 flex bg-none p-2 text-xl text-gray-400 focus:outline-none ${
+          hasHistory ? 'flex' : 'hidden'
+        }`}
+      >
+        <ion-icon name="time-outline" />
       </button>
 
       {hasHistory && isDropdownVisible && (
@@ -66,27 +82,31 @@ function SearchHistoryIcon({ searchHistory, onInputValue }) {
 }
 
 function SearchHistoryList({ searchHistory, onInputValue }) {
-  // Put keyword text in search input when clicked on keyword from search history
-  const setHistoryKeywordInput = (e) => onInputValue(e.target.innerText);
-
   const clearSearchHistory = () => {
-    // Empty the array
     searchHistory.splice(0, searchHistory.length);
     localStorage.removeItem('searchHistory');
   };
 
   return (
-    <ul className='search-history-list'>
+    <ul className="mt:mb-20 absolute right-11 top-14 z-50 max-h-52 w-48 overflow-y-auto rounded-lg border border-gray-200 bg-white shadow-lg">
       {searchHistory
         .map((keyword, i) => (
-          <li key={i}>
-            <strong onClick={setHistoryKeywordInput}>{keyword.keyword}</strong>{' '}
-            <span>{keyword.time}</span>
+          <li
+            onClick={() => onInputValue(keyword.keyword)}
+            key={i}
+            className="flex cursor-pointer items-center justify-between px-4 py-2 hover:bg-gray-100"
+          >
+            <strong>{keyword.keyword}</strong>
+            <span className="text-sm text-gray-500">{keyword.time}</span>
           </li>
         ))
         .toReversed()}
-      <button onClick={clearSearchHistory}>
-        <ion-icon name='trash-outline' />
+
+      <button
+        onClick={clearSearchHistory}
+        className="flex w-full items-center justify-center bg-red-100 py-2 text-xl text-red-600 hover:bg-red-200"
+      >
+        <ion-icon name="trash-outline" />
       </button>
     </ul>
   );

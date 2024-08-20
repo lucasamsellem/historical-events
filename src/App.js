@@ -37,7 +37,7 @@ export default function App() {
 
         const res = await fetch(
           `https://api.api-ninjas.com/v1/historicalevents?text=${theme}`,
-          options
+          options,
         );
 
         // Display error msg when no theme fetched
@@ -75,13 +75,15 @@ export default function App() {
   }, []);
 
   return (
-    <div className='container'>
-      <header>
-        <span className='title'>
+    <div className="flex min-h-screen flex-col">
+      <header className="mb-16 flex flex-col items-center justify-between gap-8 bg-indigo-500 py-4 sm:px-20 md:mb-20 md:flex-row md:px-8 lg:mb-20">
+        <span className="flex items-center justify-center gap-4">
           <EarthIcon />
-          <h1>HISTORICAL EVENTS</h1>
+          <h1 className="font-bold text-white sm:text-2xl md:text-lg lg:text-2xl">
+            HISTORICAL EVENTS
+          </h1>
         </span>
-        <span className='search-container'>
+        <span className="relative flex items-center">
           <SearchInput
             theme={theme}
             inputValue={inputValue}
@@ -103,14 +105,22 @@ export default function App() {
         />
       </header>
 
-      <main>
+      <main className="mx-auto max-w-7xl flex-1 px-6">
         {(() => {
           if (isLoading) {
-            return <p className='loading'>LOADING...</p>;
+            return (
+              <p className="text-center font-semibold text-gray-900">
+                LOADING...
+              </p>
+            );
           }
 
           if (isUnknownKeyword) {
-            return <p className='unknown-keyword'>Unknown keyword</p>;
+            return (
+              <p className="text-center font-semibold text-gray-900">
+                Unknown keyword
+              </p>
+            );
           }
 
           if (showFavorites && hasFavorites) {
@@ -145,7 +155,7 @@ export default function App() {
         })()}
       </main>
 
-      <footer>
+      <footer className="flex justify-center bg-indigo-500 py-4 text-center">
         <EarthIcon />
       </footer>
     </div>
@@ -153,13 +163,7 @@ export default function App() {
 }
 
 function EarthIcon() {
-  return (
-    <img
-      className='app-logo-container'
-      src={`${process.env.PUBLIC_URL}/earth.svg`}
-      alt='Earth Icon'
-    />
-  );
+  return <img src={`${process.env.PUBLIC_URL}/earth.svg`} alt="Earth Icon" />;
 }
 
 function FavoriteIcon({
@@ -170,15 +174,21 @@ function FavoriteIcon({
 }) {
   return (
     <span
-      className='favorite-icon-container'
+      className="relative"
       onClick={() => onShowFavorites(hasFavorites && !showFavorites)}
     >
-      <button className={`favorite-icon ${hasFavorites ? 'pointer' : ''}`}>
-        <ion-icon name={`bookmark${!hasFavorites ? '-outline' : ''}`} />
+      <button
+        className={`text-4xl text-white transition ${
+          hasFavorites ? 'cursor-pointer' : ''
+        }`}
+      >
+        <ion-icon name={`bookmark${!showFavorites ? '-outline' : ''}`} />
       </button>
 
       {hasFavorites && (
-        <span className='favorite-count'>{favoriteEvents.length}</span>
+        <span className="absolute bottom-6 left-5 rounded-full bg-yellow-400 px-2 py-0.5 text-sm text-white">
+          {favoriteEvents.length}
+        </span>
       )}
     </span>
   );

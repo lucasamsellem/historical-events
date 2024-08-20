@@ -12,7 +12,7 @@ function EventsList({ events, era, today, favoriteEvents, onFavoriteEvents }) {
     .sort((a, b) => a.year - b.year);
 
   return (
-    <ul className='events-list'>
+    <ul className="my-10 mb-20 grid grid-cols-1 gap-8 md:grid-cols-3">
       {sortedFilteredEras.map((event) => (
         <Event
           key={event.event}
@@ -31,7 +31,7 @@ function EventsList({ events, era, today, favoriteEvents, onFavoriteEvents }) {
 
 function FavoriteEventsList({ favoriteEvents, today, onFavoriteEvents }) {
   return (
-    <ul className='events-list'>
+    <ul className="my-10 mb-20 grid grid-cols-1 gap-8 md:grid-cols-3">
       {favoriteEvents.map((event) => (
         <Event
           key={event.event}
