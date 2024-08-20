@@ -118,7 +118,8 @@ export default function App() {
           if (isUnknownKeyword) {
             return (
               <p className="text-center font-semibold text-gray-900">
-                Unknown keyword
+                Unknown keyword. Try searching for a historical event, landmark,
+                famous person, or other notable topic.
               </p>
             );
           }

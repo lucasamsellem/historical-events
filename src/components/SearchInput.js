@@ -36,7 +36,7 @@ function SearchInput({
   return (
     <form className="flex items-center space-x-2">
       <button
-        className="z-50 -mr-11 flex border-r-[1px] border-gray-300 pr-2 text-xl text-gray-400"
+        className="z-50 -mr-12 flex border-r-[1px] border-gray-300 pr-2 text-xl text-gray-400"
         onClick={handleButtonClick}
       >
         <ion-icon name="search-outline" />
@@ -47,7 +47,7 @@ function SearchInput({
         placeholder="Enter a keyword"
         value={inputValue}
         onChange={(e) => onInputValue(e.target.value)}
-        className="rounded-md border-none p-3 pl-12 focus:outline-none"
+        className="rounded-md border-none p-3 pl-14 focus:outline-none"
       />
     </form>
   );
@@ -88,13 +88,13 @@ function SearchHistoryList({ searchHistory, onInputValue }) {
   };
 
   return (
-    <ul className="mt:mb-20 absolute right-11 top-14 z-50 max-h-52 w-48 overflow-y-auto rounded-lg border border-gray-200 bg-white shadow-lg">
+    <ul className="mt:mb-20 absolute right-11 top-14 z-50 max-h-52 w-52 overflow-y-auto rounded-lg border border-gray-200 bg-white shadow-lg">
       {searchHistory
         .map((keyword, i) => (
           <li
             onClick={() => onInputValue(keyword.keyword)}
             key={i}
-            className="flex cursor-pointer items-center justify-between px-4 py-2 hover:bg-gray-100"
+            className="flex cursor-pointer items-center justify-between gap-6 px-4 py-2 hover:bg-gray-100"
           >
             <strong>{keyword.keyword}</strong>
             <span className="text-sm text-gray-500">{keyword.time}</span>
