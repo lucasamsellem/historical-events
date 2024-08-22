@@ -22,6 +22,8 @@ export default function App() {
   const hasFavorites = favoriteEvents.length > 0;
 
   useEffect(() => {
+    const abortController = new AbortController();
+
     async function fetchData() {
       setShowFavorites(false);
       setIsLoading(true);
@@ -33,6 +35,7 @@ export default function App() {
           headers: {
             'x-api-key': 'kRnIzNo36l8B9S5rhLJv3A==ad72TC2KBwAXrszH',
           },
+          signal: abortController.signal,
         };
 
         const res = await fetch(
@@ -62,6 +65,8 @@ export default function App() {
     if (!theme) return;
 
     fetchData();
+
+    return () => abortController.abort();
   }, [theme]);
 
   // Load search history from localStorage when the app loads
@@ -79,30 +84,33 @@ export default function App() {
       <header className="mb-16 flex flex-col items-center justify-between gap-8 bg-indigo-500 py-4 sm:px-20 md:mb-20 md:flex-row md:px-8 lg:mb-20">
         <span className="flex items-center justify-center gap-4">
           <EarthIcon />
-          <h1 className="font-bold text-white sm:text-2xl md:text-lg lg:text-2xl">
+          <h1 className="text-2xl font-bold text-white md:text-lg lg:text-2xl">
             HISTORICAL EVENTS
           </h1>
         </span>
-        <span className="relative flex items-center">
-          <SearchInput
-            theme={theme}
-            inputValue={inputValue}
-            onInputValue={setInputValue}
-            onSetTheme={setTheme}
-            searchHistory={searchHistory}
-            onSearchHistory={setSearchHistory}
-          />
-          <SearchHistoryIcon
-            searchHistory={searchHistory}
-            onInputValue={setInputValue}
+        <span className="relative flex items-center gap-2">
+          <>
+            <SearchInput
+              theme={theme}
+              inputValue={inputValue}
+              onInputValue={setInputValue}
+              onSetTheme={setTheme}
+              searchHistory={searchHistory}
+              onSearchHistory={setSearchHistory}
+            />
+            <SearchHistoryIcon
+              searchHistory={searchHistory}
+              onInputValue={setInputValue}
+              onSetTheme={setTheme}
+            />
+          </>
+          <FavoriteIcon
+            favoriteEvents={favoriteEvents}
+            showFavorites={showFavorites}
+            onShowFavorites={setShowFavorites}
+            hasFavorites={hasFavorites}
           />
         </span>
-        <FavoriteIcon
-          favoriteEvents={favoriteEvents}
-          showFavorites={showFavorites}
-          onShowFavorites={setShowFavorites}
-          hasFavorites={hasFavorites}
-        />
       </header>
 
       <main className="mx-auto max-w-7xl flex-1 px-6">
@@ -156,7 +164,7 @@ export default function App() {
         })()}
       </main>
 
-      <footer className="flex justify-center bg-indigo-500 py-4 text-center">
+      <footer className="flex justify-center bg-indigo-500 py-2 text-center">
         <EarthIcon />
       </footer>
     </div>
@@ -179,7 +187,7 @@ function FavoriteIcon({
       onClick={() => onShowFavorites(hasFavorites && !showFavorites)}
     >
       <button
-        className={`text-4xl text-white transition ${
+        className={`flex text-4xl text-white transition ${
           hasFavorites ? 'cursor-pointer' : ''
         }`}
       >
@@ -187,7 +195,7 @@ function FavoriteIcon({
       </button>
 
       {hasFavorites && (
-        <span className="absolute bottom-6 left-5 rounded-full bg-yellow-400 px-2 py-0.5 text-sm text-white">
+        <span className="absolute bottom-5 left-5 rounded-full bg-yellow-400 px-2 py-0.5 text-sm text-white">
           {favoriteEvents.length}
         </span>
       )}

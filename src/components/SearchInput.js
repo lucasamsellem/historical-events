@@ -34,9 +34,9 @@ function SearchInput({
   };
 
   return (
-    <form className="flex items-center space-x-2">
+    <form className="flex items-center">
       <button
-        className="z-50 -mr-12 flex border-r-[1px] border-gray-300 pr-2 text-xl text-gray-400"
+        className="z-50 -mr-10 flex border-r-[1px] border-gray-300 pr-2 text-2xl text-gray-400"
         onClick={handleButtonClick}
       >
         <ion-icon name="search-outline" />
@@ -47,13 +47,13 @@ function SearchInput({
         placeholder="Enter a keyword"
         value={inputValue}
         onChange={(e) => onInputValue(e.target.value)}
-        className="rounded-md border-none p-3 pl-14 focus:outline-none"
+        className="max-w-[16rem] rounded-md border-none px-14 py-3 focus:outline-none"
       />
     </form>
   );
 }
 
-function SearchHistoryIcon({ searchHistory, onInputValue }) {
+function SearchHistoryIcon({ searchHistory, onSetTheme }) {
   const [isDropdownVisible, setDropdownVisible] = useState(false);
 
   const hasHistory = searchHistory.length > 0;
@@ -64,7 +64,7 @@ function SearchHistoryIcon({ searchHistory, onInputValue }) {
       onClick={() => setDropdownVisible(!isDropdownVisible)}
     >
       <button
-        className={`-ml-10 flex bg-none p-2 text-xl text-gray-400 focus:outline-none ${
+        className={`-ml-12 flex bg-none p-2 text-2xl text-gray-400 focus:outline-none ${
           hasHistory ? 'flex' : 'hidden'
         }`}
       >
@@ -73,26 +73,27 @@ function SearchHistoryIcon({ searchHistory, onInputValue }) {
 
       {hasHistory && isDropdownVisible && (
         <SearchHistoryList
+          onSetTheme={onSetTheme}
           searchHistory={searchHistory}
-          onInputValue={onInputValue}
         />
       )}
     </span>
   );
 }
 
-function SearchHistoryList({ searchHistory, onInputValue }) {
+function SearchHistoryList({ searchHistory, onSetTheme }) {
+  // Clear local storage when user clicks on trash icon
   const clearSearchHistory = () => {
     searchHistory.splice(0, searchHistory.length);
     localStorage.removeItem('searchHistory');
   };
 
   return (
-    <ul className="mt:mb-20 absolute right-11 top-14 z-50 max-h-52 w-52 overflow-y-auto rounded-lg border border-gray-200 bg-white shadow-lg">
+    <ul className="mt:mb-20 absolute right-6 top-14 z-50 max-h-52 w-52 overflow-y-auto rounded-lg border border-gray-200 bg-white shadow-lg">
       {searchHistory
         .map((keyword, i) => (
           <li
-            onClick={() => onInputValue(keyword.keyword)}
+            onClick={() => onSetTheme(keyword.keyword)}
             key={i}
             className="flex cursor-pointer items-center justify-between gap-6 px-4 py-2 hover:bg-gray-100"
           >
