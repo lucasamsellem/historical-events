@@ -66,7 +66,7 @@ export default function Event({
       </div>
       <p className="text-base font-medium">{event}</p>
       <h5 className="mt-3 text-sm italic opacity-60">
-        {today - year} years ago 
+        {today - year} years ago
       </h5>
     </li>
   );
