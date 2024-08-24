@@ -2,35 +2,12 @@ import { useState } from 'react';
 
 export { SearchInput, SearchHistoryIcon, SearchHistoryList };
 
-function SearchInput({
-  inputValue,
-  onInputValue,
-  onSetTheme,
-  onSearchHistory,
-}) {
+function SearchInput({ inputValue, trimmedInput, onInputValue, onSetTheme }) {
   const handleButtonClick = (e) => {
     e.preventDefault();
 
-    const now = new Date().toLocaleTimeString([], {
-      hour: '2-digit',
-      minute: '2-digit',
-    });
-
-    const trimmedInput = inputValue.trim();
-
     // Prevent empty spaces from being pushed to search history
-    if (trimmedInput !== '') {
-      onSetTheme(trimmedInput);
-
-      onSearchHistory((prev) => {
-        const updatedHistory = [...prev, { keyword: trimmedInput, time: now }];
-
-        // Save search history to localStorage whenever it changes
-        localStorage.setItem('searchHistory', JSON.stringify(updatedHistory));
-
-        return updatedHistory;
-      });
-    }
+    if (trimmedInput !== '') onSetTheme(trimmedInput);
   };
 
   return (

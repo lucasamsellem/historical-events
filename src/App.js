@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import { SearchInput, SearchHistoryIcon } from './components/SearchInput';
 import { EventsList, FavoriteEventsList } from './components/EventsList';
 import Eras from './components/Eras';
+import EarthIcon from './components/EarthIcon';
+import FavoriteIcon from './components/FavoriteIcon';
 
 export default function App() {
   const [theme, setTheme] = useState('');
@@ -18,8 +20,12 @@ export default function App() {
   const [searchHistory, setSearchHistory] = useState([]);
 
   const today = new Date().getFullYear();
-
   const hasFavorites = favoriteEvents.length > 0;
+  const trimmedInput = inputValue.trim();
+  const now = new Date().toLocaleTimeString([], {
+    hour: '2-digit',
+    minute: '2-digit',
+  });
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -43,18 +49,37 @@ export default function App() {
           options,
         );
 
-        // Display error msg when no theme fetched
-        const contentLength = +res.headers.get('content-length');
-        contentLength === 2 && setIsUnknownKeyword(true);
+        // Display error msg when unknown keyword
+        const unknownKeyword = Number(res.headers.get('content-length')) === 2;
 
-        const data = await res.json();
-        setEvents(data);
+        if (!unknownKeyword) {
+          const data = await res.json();
+          setEvents(data);
 
-        const years = data.map((event) => event.year);
-        setEventsYear(years);
+          const years = data.map((event) => event.year);
+          setEventsYear(years);
 
-        // Clear keyword input after loading
-        setInputValue('');
+          // Push valid keyword to search history list
+          setSearchHistory((prev) => {
+            const updatedHistory = [
+              ...prev,
+              { keyword: trimmedInput, time: now },
+            ];
+
+            // Save search history to localStorage
+            localStorage.setItem(
+              'searchHistory',
+              JSON.stringify(updatedHistory),
+            );
+
+            return updatedHistory;
+          });
+
+          // Clear keyword input after loading
+          setInputValue('');
+        } else {
+          setIsUnknownKeyword(true);
+        }
       } catch (error) {
         console.error('Fetching data failed:', error);
       } finally {
@@ -62,9 +87,7 @@ export default function App() {
       }
     }
 
-    if (!theme) return;
-
-    fetchData();
+    if (theme) fetchData();
 
     return () => abortController.abort();
   }, [theme]);
@@ -75,7 +98,6 @@ export default function App() {
     const storedFavorites = localStorage.getItem('favoriteEvents');
 
     if (storedHistory) setSearchHistory(JSON.parse(storedHistory));
-
     if (storedFavorites) setFavoriteEvents(JSON.parse(storedFavorites));
   }, []);
 
@@ -97,6 +119,7 @@ export default function App() {
               onSetTheme={setTheme}
               searchHistory={searchHistory}
               onSearchHistory={setSearchHistory}
+              trimmedInput={trimmedInput}
             />
             <SearchHistoryIcon
               searchHistory={searchHistory}
@@ -126,8 +149,8 @@ export default function App() {
           if (isUnknownKeyword) {
             return (
               <p className="text-center font-semibold text-gray-900">
-                Unknown keyword. Try searching for a historical event, landmark,
-                famous person, or other notable topic.
+                Unknown keyword. Try searching for a historical event, country,
+                landmark, influencial person, or other notable topic.
               </p>
             );
           }
@@ -168,37 +191,5 @@ export default function App() {
         <EarthIcon />
       </footer>
     </div>
-  );
-}
-
-function EarthIcon() {
-  return <img src={`${process.env.PUBLIC_URL}/earth.svg`} alt="Earth Icon" />;
-}
-
-function FavoriteIcon({
-  favoriteEvents,
-  showFavorites,
-  onShowFavorites,
-  hasFavorites,
-}) {
-  return (
-    <span
-      className="relative"
-      onClick={() => onShowFavorites(hasFavorites && !showFavorites)}
-    >
-      <button
-        className={`flex text-4xl text-white transition ${
-          hasFavorites ? 'cursor-pointer' : ''
-        }`}
-      >
-        <ion-icon name={`bookmark${!showFavorites ? '-outline' : ''}`} />
-      </button>
-
-      {hasFavorites && (
-        <span className="absolute bottom-5 left-5 rounded-full bg-yellow-400 px-2 py-0.5 text-sm text-white">
-          {favoriteEvents.length}
-        </span>
-      )}
-    </span>
   );
 }
