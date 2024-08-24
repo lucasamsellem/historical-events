@@ -2,7 +2,14 @@ import Event from './Event';
 
 export { EventsList, FavoriteEventsList };
 
-function EventsList({ events, era, today, favoriteEvents, onFavoriteEvents }) {
+function EventsList({
+  events,
+  era,
+  today,
+  favoriteEvents,
+  onFavoriteEvents,
+  theme,
+}) {
   const sortedFilteredEras = events
     .filter((event) => {
       if (!era) return true;
@@ -23,13 +30,19 @@ function EventsList({ events, era, today, favoriteEvents, onFavoriteEvents }) {
           today={today}
           favoriteEvents={favoriteEvents}
           onFavoriteEvents={onFavoriteEvents}
+          theme={theme}
         />
       ))}
     </ul>
   );
 }
 
-function FavoriteEventsList({ favoriteEvents, today, onFavoriteEvents }) {
+function FavoriteEventsList({
+  favoriteEvents,
+  today,
+  onFavoriteEvents,
+  theme,
+}) {
   return (
     <ul className="my-10 mb-20 grid grid-cols-1 gap-8 md:grid-cols-3">
       {favoriteEvents.map((event) => (
@@ -42,6 +55,7 @@ function FavoriteEventsList({ favoriteEvents, today, onFavoriteEvents }) {
           today={today}
           favoriteEvents={favoriteEvents}
           onFavoriteEvents={onFavoriteEvents}
+          theme={theme}
         />
       ))}
     </ul>

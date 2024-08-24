@@ -20,12 +20,13 @@ export default function App() {
   const [searchHistory, setSearchHistory] = useState([]);
 
   const today = new Date().getFullYear();
-  const hasFavorites = favoriteEvents.length > 0;
   const trimmedInput = inputValue.trim();
   const now = new Date().toLocaleTimeString([], {
     hour: '2-digit',
     minute: '2-digit',
   });
+
+  const hasFavorites = favoriteEvents.length > 0;
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -48,6 +49,9 @@ export default function App() {
           `https://api.api-ninjas.com/v1/historicalevents?text=${theme}`,
           options,
         );
+
+        // Clear keyword input after loading
+        setInputValue('');
 
         // Display error msg when unknown keyword
         const unknownKeyword = Number(res.headers.get('content-length')) === 2;
@@ -74,9 +78,6 @@ export default function App() {
 
             return updatedHistory;
           });
-
-          // Clear keyword input after loading
-          setInputValue('');
         } else {
           setIsUnknownKeyword(true);
         }
@@ -161,6 +162,7 @@ export default function App() {
                 favoriteEvents={favoriteEvents}
                 today={today}
                 onFavoriteEvents={setFavoriteEvents}
+                theme={theme}
               />
             );
           }
@@ -181,6 +183,7 @@ export default function App() {
                 today={today}
                 favoriteEvents={favoriteEvents}
                 onFavoriteEvents={setFavoriteEvents}
+                theme={theme}
               />
             </>
           );

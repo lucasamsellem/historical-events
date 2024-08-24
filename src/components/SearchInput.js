@@ -65,9 +65,14 @@ function SearchHistoryList({ searchHistory, onSetTheme }) {
     localStorage.removeItem('searchHistory');
   };
 
+  // Filter out empty strings before rendering the list
+  const filteredSearchHistory = searchHistory.filter(
+    (item) => item.keyword.trim() !== '',
+  );
+
   return (
     <ul className="mt:mb-20 absolute right-6 top-14 z-50 max-h-52 w-52 overflow-y-auto rounded-lg border border-gray-200 bg-white shadow-lg">
-      {searchHistory
+      {filteredSearchHistory
         .map((keyword, i) => (
           <li
             onClick={() => onSetTheme(keyword.keyword)}

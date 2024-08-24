@@ -1,20 +1,26 @@
+import { useEffect } from 'react';
+
 export default function FavoriteIcon({
   favoriteEvents,
   showFavorites,
   onShowFavorites,
   hasFavorites,
 }) {
+  useEffect(() => {
+    if (!hasFavorites) onShowFavorites(false);
+  }, [hasFavorites, showFavorites, onShowFavorites]);
+
   return (
-    <span
-      className="relative"
-      onClick={() => onShowFavorites(hasFavorites && !showFavorites)}
-    >
+    <span className="relative">
       <button
         className={`flex text-4xl text-white transition ${
           hasFavorites ? 'cursor-pointer' : ''
         }`}
+        onClick={() => onShowFavorites(hasFavorites && !showFavorites)}
       >
-        <ion-icon name={`bookmark${!showFavorites ? '-outline' : ''}`} />
+        <ion-icon
+          name={`bookmark${!showFavorites || !hasFavorites ? '-outline' : ''}`}
+        />
       </button>
 
       {hasFavorites && (
