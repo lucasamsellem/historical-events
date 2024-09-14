@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
 export default function Event({
-  theme,
   event,
   day,
   month,
@@ -23,7 +22,7 @@ export default function Event({
       if (prev.some((fav) => fav.event === event)) {
         updatedFavoriteEvents = prev.filter((fav) => fav.event !== event);
       } else {
-        updatedFavoriteEvents = [...prev, { event, day, month, year, theme }];
+        updatedFavoriteEvents = [...prev, { event, day, month, year }];
       }
 
       // Update localStorage with the new favorites list
@@ -66,7 +65,7 @@ export default function Event({
       </div>
       <p className="text-base font-medium">{event}</p>
       <h5 className="mt-3 text-sm italic opacity-60">
-        {today - year} years ago {theme}
+        {today - year} years ago
       </h5>
     </li>
   );
