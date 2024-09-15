@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+// Todo : afficher theme favoris, era button active when only one choice
+
 // COMPONENTS
 import Header from './components/Header';
 import Main from './components/Main';
