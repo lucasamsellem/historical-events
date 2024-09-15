@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-function useLocalStorage({ setSearchHistory, setFavoriteEvents }) {
+function LocalStorage({ setSearchHistory, setFavoriteEvents }) {
   useEffect(() => {
     const storedHistory = localStorage.getItem('searchHistory');
     const storedFavorites = localStorage.getItem('favoriteEvents');
@@ -10,4 +10,4 @@ function useLocalStorage({ setSearchHistory, setFavoriteEvents }) {
   }, []);
 }
 
-export default useLocalStorage;
+export default LocalStorage;

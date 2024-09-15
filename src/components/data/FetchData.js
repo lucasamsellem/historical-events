@@ -1,17 +1,21 @@
 import { useEffect } from 'react';
 
-function useFetchData({
+function FetchData({
   theme,
   setEvents,
   setIsLoading,
   setShowFavorites,
   setIsUnknownKeyword,
   trimmedInput,
-  now,
   setInputValue,
   setEventsYear,
   setSearchHistory,
 }) {
+  const now = new Date().toLocaleTimeString([], {
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+
   useEffect(() => {
     const abortController = new AbortController();
 
@@ -76,4 +80,4 @@ function useFetchData({
   }, [theme]);
 }
 
-export default useFetchData;
+export default FetchData;

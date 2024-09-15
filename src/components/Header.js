@@ -5,11 +5,11 @@ import FavoriteIcon from './FavoriteIcon';
 
 function Header({
   theme,
-  inputValue,
   setInputValue,
   setTheme,
   searchHistory,
   setSearchHistory,
+  inputValue,
   trimmedInput,
   favoriteEvents,
   showFavorites,
@@ -28,11 +28,11 @@ function Header({
         <>
           <SearchInput
             theme={theme}
-            inputValue={inputValue}
             onInputValue={setInputValue}
             onSetTheme={setTheme}
             searchHistory={searchHistory}
             onSearchHistory={setSearchHistory}
+            inputValue={inputValue}
             trimmedInput={trimmedInput}
           />
           <SearchHistoryIcon

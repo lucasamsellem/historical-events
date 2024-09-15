@@ -32,7 +32,6 @@ function SearchInput({ inputValue, trimmedInput, onInputValue, onSetTheme }) {
 
 function SearchHistoryIcon({ searchHistory, onSetTheme }) {
   const [isDropdownVisible, setDropdownVisible] = useState(false);
-
   const hasHistory = searchHistory.length > 0;
 
   return (
@@ -59,7 +58,6 @@ function SearchHistoryIcon({ searchHistory, onSetTheme }) {
 }
 
 function SearchHistoryList({ searchHistory, onSetTheme }) {
-  // Clear local storage when user clicks on trash icon
   const clearSearchHistory = () => {
     searchHistory.splice(0, searchHistory.length);
     localStorage.removeItem('searchHistory');
@@ -67,7 +65,7 @@ function SearchHistoryList({ searchHistory, onSetTheme }) {
 
   // Filter out empty strings before rendering the list
   const filteredSearchHistory = searchHistory.filter(
-    (item) => item.keyword.trim() !== '',
+    (item) => item.keyword?.trim() !== '',
   );
 
   return (

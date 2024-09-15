@@ -4,43 +4,36 @@ import { useState } from 'react';
 import Header from './components/Header';
 import Main from './components/Main';
 import Footer from './components/Footer';
-import useFetchData from './custom hooks/useFetchData';
-import useLocalStorage from './custom hooks/useLocalStorage';
+import FetchData from './components/data/FetchData';
+import LocalStorage from './components/data/LocalStorage';
 
 export default function App() {
   const [theme, setTheme] = useState('');
   const [inputValue, setInputValue] = useState(theme);
   const [events, setEvents] = useState([]);
   const [eventsYear, setEventsYear] = useState([]);
-  const [era, setEra] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isUnknownKeyword, setIsUnknownKeyword] = useState(false);
-  const [showFavorites, setShowFavorites] = useState(false);
   const [favoriteEvents, setFavoriteEvents] = useState([]);
+  const [showFavorites, setShowFavorites] = useState(false);
   const [searchHistory, setSearchHistory] = useState([]);
 
-  const hasFavorites = favoriteEvents.length > 0;
   const trimmedInput = inputValue.trim();
-  const today = new Date().getFullYear();
-  const now = new Date().toLocaleTimeString([], {
-    hour: '2-digit',
-    minute: '2-digit',
-  });
+  const hasFavorites = favoriteEvents.length > 0;
 
-  useFetchData({
+  FetchData({
     theme,
     setEvents,
     setIsLoading,
     setShowFavorites,
     setIsUnknownKeyword,
     trimmedInput,
-    now,
     setInputValue,
     setEventsYear,
     setSearchHistory,
   });
 
-  useLocalStorage({
+  LocalStorage({
     setSearchHistory,
     setFavoriteEvents,
   });
@@ -48,29 +41,29 @@ export default function App() {
   return (
     <div className="flex min-h-screen flex-col">
       <Header
-        theme={theme}
         inputValue={inputValue}
+        trimmedInput={trimmedInput}
+        theme={theme}
         setInputValue={setInputValue}
         setTheme={setTheme}
         searchHistory={searchHistory}
         setSearchHistory={setSearchHistory}
         setShowFavorites={setShowFavorites}
-        trimmedInput={inputValue}
+        hasFavorites={hasFavorites}
+        favoriteEvents={favoriteEvents}
+        showFavorites={showFavorites}
       />
 
       <Main
         isLoading={isLoading}
         isUnknownKeyword={isUnknownKeyword}
         showFavorites={showFavorites}
-        hasFavorites={hasFavorites}
         favoriteEvents={favoriteEvents}
-        today={today}
         theme={theme}
         setFavoriteEvents={setFavoriteEvents}
         eventsYear={eventsYear}
-        era={era}
-        setEra={setEra}
         events={events}
+        hasFavorites={hasFavorites}
       />
 
       <Footer />

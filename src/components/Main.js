@@ -8,16 +8,17 @@ function Main({
   isLoading,
   isUnknownKeyword,
   showFavorites,
-  hasFavorites,
   favoriteEvents,
-  today,
   theme,
   setFavoriteEvents,
   eventsYear,
-  era,
-  setEra,
   events,
+  hasFavorites,
 }) {
+  const [era, setEra] = useState(null);
+
+  const today = new Date().getFullYear();
+
   return (
     <main className="mx-auto max-w-7xl flex-1 px-6">
       {(() => {
