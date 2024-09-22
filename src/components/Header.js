@@ -20,10 +20,12 @@ function Header({
     <header className="mb-16 flex flex-col items-center justify-between gap-8 bg-indigo-500 py-4 sm:px-20 md:mb-20 md:flex-row md:px-8 lg:mb-20">
       <span className="flex items-center justify-center gap-4">
         <EarthIcon />
+
         <h1 className="text-2xl font-bold text-white md:text-lg lg:text-2xl">
-          HISTORICAL EVENTS
+          {showFavorites ? 'Favorite Events' : 'Historical Events'}
         </h1>
       </span>
+
       <span className="relative flex items-center gap-2">
         <>
           <SearchInput

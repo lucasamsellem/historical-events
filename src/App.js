@@ -8,6 +8,7 @@ import Main from './components/Main';
 import Footer from './components/Footer';
 import FetchData from './components/data/FetchData';
 import LocalStorage from './components/data/LocalStorage';
+import HomePageText from './components/HomePageText';
 
 export default function App() {
   const [theme, setTheme] = useState('');
@@ -55,6 +56,8 @@ export default function App() {
         favoriteEvents={favoriteEvents}
         showFavorites={showFavorites}
       />
+
+      {!theme && !showFavorites && <HomePageText />}
 
       <Main
         isLoading={isLoading}

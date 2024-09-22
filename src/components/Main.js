@@ -16,7 +16,6 @@ function Main({
   hasFavorites,
 }) {
   const [era, setEra] = useState(null);
-
   const today = new Date().getFullYear();
 
   return (
@@ -32,10 +31,14 @@ function Main({
 
         if (isUnknownKeyword) {
           return (
-            <p className="text-center font-semibold text-gray-900">
-              Unknown keyword. Try searching for a historical event, country,
-              landmark, influencial person, or other notable topic.
-            </p>
+            <>
+              <p className="mb-5 text-center font-semibold text-gray-900">
+                Unknown keyword...{' '}
+              </p>
+              <p className="italic opacity-50">
+                Examples: 'world war', 'france', 'shakespeare'
+              </p>
+            </>
           );
         }
 
