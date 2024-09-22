@@ -31,14 +31,14 @@ function Main({
 
         if (isUnknownKeyword) {
           return (
-            <>
-              <p className="mb-5 text-center font-semibold text-gray-900">
+            <div className="text-center">
+              <p className="mb-5 font-semibold text-gray-900">
                 Unknown keyword...{' '}
               </p>
               <p className="italic opacity-50">
                 Examples: 'world war', 'france', 'shakespeare'
               </p>
-            </>
+            </div>
           );
         }
 
