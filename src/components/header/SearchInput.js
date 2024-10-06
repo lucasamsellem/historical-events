@@ -1,13 +1,18 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 
 export { SearchInput, SearchHistoryIcon, SearchHistoryList };
 
 function SearchInput({ inputValue, trimmedInput, onInputValue, onSetTheme }) {
+  const inputRef = useRef(null);
+
   const handleButtonClick = (e) => {
     e.preventDefault();
 
     // Prevent empty spaces from being pushed to search history
     if (trimmedInput !== '') onSetTheme(trimmedInput);
+
+    // Remove focus from the input field after clicking the search icon
+    if (inputRef.current) inputRef.current.blur();
   };
 
   return (
@@ -20,17 +25,19 @@ function SearchInput({ inputValue, trimmedInput, onInputValue, onSetTheme }) {
       </button>
 
       <input
+        ref={inputRef}
         type="text"
         placeholder="Enter a keyword"
         value={inputValue}
         onChange={(e) => onInputValue(e.target.value)}
-        className="max-w-[16rem] rounded-md border-none px-14 py-3 focus:outline-none"
+        className="max-w-[16rem] rounded-md border-none px-14 py-3 font-medium focus:outline-none"
+        autoFocus
       />
     </form>
   );
 }
 
-function SearchHistoryIcon({ searchHistory, onSetTheme }) {
+function SearchHistoryIcon({ onInputValue, searchHistory, onSetTheme }) {
   const [isDropdownVisible, setDropdownVisible] = useState(false);
   const hasHistory = searchHistory.length > 0;
 
@@ -49,6 +56,7 @@ function SearchHistoryIcon({ searchHistory, onSetTheme }) {
 
       {hasHistory && isDropdownVisible && (
         <SearchHistoryList
+          onInputValue={onInputValue}
           onSetTheme={onSetTheme}
           searchHistory={searchHistory}
         />
@@ -57,7 +65,7 @@ function SearchHistoryIcon({ searchHistory, onSetTheme }) {
   );
 }
 
-function SearchHistoryList({ searchHistory, onSetTheme }) {
+function SearchHistoryList({ onInputValue, searchHistory, onSetTheme }) {
   const clearSearchHistory = () => {
     searchHistory.splice(0, searchHistory.length);
     localStorage.removeItem('searchHistory');
@@ -69,16 +77,19 @@ function SearchHistoryList({ searchHistory, onSetTheme }) {
   );
 
   return (
-    <ul className="mt:mb-20 absolute right-6 top-14 z-50 max-h-52 w-52 overflow-y-auto rounded-lg border border-gray-200 bg-white shadow-lg">
+    <ul className="mt:mb-20 absolute right-6 top-14 z-50 grid max-h-52 w-52 overflow-y-auto overflow-x-hidden rounded-lg border border-gray-200 bg-white shadow-lg">
       {filteredSearchHistory
-        .map((keyword, i) => (
+        .map(({ keyword, time }, i) => (
           <li
-            onClick={() => onSetTheme(keyword.keyword)}
+            onClick={() => {
+              onInputValue(keyword);
+              onSetTheme(keyword);
+            }}
             key={i}
             className="flex cursor-pointer items-center justify-between gap-6 px-4 py-2 hover:bg-gray-100"
           >
-            <strong>{keyword.keyword}</strong>
-            <span className="text-sm text-gray-500">{keyword.time}</span>
+            <strong>{keyword}</strong>
+            <span className="text-sm text-gray-500">{time}</span>
           </li>
         ))
         .toReversed()}

@@ -1,7 +1,7 @@
-import EarthIcon from './EarthIcon';
-import { SearchInput } from './SearchInput';
-import { SearchHistoryIcon } from './SearchInput';
-import FavoriteIcon from './FavoriteIcon';
+import EarthIcon from '../header/EarthIcon';
+import { SearchInput } from '../header/SearchInput';
+import { SearchHistoryIcon } from '../header/SearchInput';
+import FavoriteIcon from '../header/FavoriteIcon';
 
 function Header({
   theme,
@@ -15,6 +15,7 @@ function Header({
   showFavorites,
   setShowFavorites,
   hasFavorites,
+  setIsUnknownKeyword,
 }) {
   return (
     <header className="mb-16 flex flex-col items-center justify-between gap-8 bg-indigo-500 py-4 sm:px-20 md:mb-20 md:flex-row md:px-8 lg:mb-20">
@@ -38,6 +39,7 @@ function Header({
             trimmedInput={trimmedInput}
           />
           <SearchHistoryIcon
+            inputValue={inputValue}
             searchHistory={searchHistory}
             onInputValue={setInputValue}
             onSetTheme={setTheme}
@@ -48,6 +50,7 @@ function Header({
           showFavorites={showFavorites}
           onShowFavorites={setShowFavorites}
           hasFavorites={hasFavorites}
+          setIsUnknownKeyword={setIsUnknownKeyword}
         />
       </span>
     </header>

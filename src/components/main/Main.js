@@ -1,5 +1,4 @@
 import { useState } from 'react';
-
 import { FavoriteEventsList } from './EventsList';
 import { EventsList } from './EventsList';
 import Eras from './Eras';
@@ -18,9 +17,28 @@ function Main({
   const [era, setEra] = useState(null);
   const today = new Date().getFullYear();
 
+  function formatEras(events) {
+    return events
+      .filter(({ year }) => {
+        if (!era) return true;
+        const [start, end] = era;
+        return year >= start && year <= end;
+      })
+      .sort((a, b) => a.year - b.year);
+  }
+
   return (
     <main className="mx-auto max-w-7xl flex-1 px-6">
       {(() => {
+        if (!theme && !showFavorites) {
+          return (
+            <p className="px-10 text-center font-medium">
+              Enter a country, landmark, influential figure, or notable topic in
+              the search bar to discover related historical events.
+            </p>
+          );
+        }
+
         if (isLoading) {
           return (
             <p className="animate-bounce text-center font-semibold text-gray-900">
@@ -44,12 +62,22 @@ function Main({
 
         if (showFavorites && hasFavorites) {
           return (
-            <FavoriteEventsList
-              favoriteEvents={favoriteEvents}
-              today={today}
-              onFavoriteEvents={setFavoriteEvents}
-              theme={theme}
-            />
+            <>
+              <Eras
+                theme={theme}
+                eventsYear={eventsYear}
+                era={era}
+                onSetEra={setEra}
+                today={today}
+              />
+              <FavoriteEventsList
+                favoriteEvents={favoriteEvents}
+                onFavoriteEvents={setFavoriteEvents}
+                today={today}
+                theme={theme}
+                sortedFilteredEras={formatEras(favoriteEvents)}
+              />
+            </>
           );
         }
 
@@ -63,13 +91,11 @@ function Main({
               today={today}
             />
             <EventsList
-              events={events}
-              era={era}
-              isLoading={isLoading}
-              today={today}
               favoriteEvents={favoriteEvents}
               onFavoriteEvents={setFavoriteEvents}
+              today={today}
               theme={theme}
+              sortedFilteredEras={formatEras(events)}
             />
           </>
         );

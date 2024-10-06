@@ -3,12 +3,11 @@ import { useState } from 'react';
 // Todo : afficher theme favoris, era button active when only one choice
 
 // COMPONENTS
-import Header from './components/Header';
-import Main from './components/Main';
+import Header from './components/header/Header';
+import Main from './components/main/Main';
 import Footer from './components/Footer';
 import FetchData from './components/data/FetchData';
 import LocalStorage from './components/data/LocalStorage';
-import HomePageText from './components/HomePageText';
 
 export default function App() {
   const [theme, setTheme] = useState('');
@@ -55,9 +54,8 @@ export default function App() {
         hasFavorites={hasFavorites}
         favoriteEvents={favoriteEvents}
         showFavorites={showFavorites}
+        setIsUnknownKeyword={setIsUnknownKeyword}
       />
-
-      {!theme && !showFavorites && <HomePageText />}
 
       <Main
         isLoading={isLoading}

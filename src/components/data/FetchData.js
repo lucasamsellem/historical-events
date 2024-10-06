@@ -7,7 +7,6 @@ function FetchData({
   setShowFavorites,
   setIsUnknownKeyword,
   trimmedInput,
-  setInputValue,
   setEventsYear,
   setSearchHistory,
 }) {
@@ -39,9 +38,6 @@ function FetchData({
           `https://api.api-ninjas.com/v1/historicalevents?text=${theme}`,
           options,
         );
-
-        // Clear keyword input after loading
-        setInputValue('');
 
         const unknownKeyword = Number(res.headers.get('content-length')) === 2;
 

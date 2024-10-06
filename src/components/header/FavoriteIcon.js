@@ -5,10 +5,16 @@ export default function FavoriteIcon({
   showFavorites,
   onShowFavorites,
   hasFavorites,
+  setIsUnknownKeyword,
 }) {
   useEffect(() => {
     if (!hasFavorites) onShowFavorites(false);
   }, [hasFavorites, showFavorites, onShowFavorites]);
+
+  function handleShowFavorites() {
+    setIsUnknownKeyword(false);
+    onShowFavorites(hasFavorites && !showFavorites);
+  }
 
   return (
     <span className="relative">
@@ -16,7 +22,7 @@ export default function FavoriteIcon({
         className={`flex text-4xl text-white transition ${
           hasFavorites ? 'cursor-pointer' : ''
         }`}
-        onClick={() => onShowFavorites(hasFavorites && !showFavorites)}
+        onClick={handleShowFavorites}
       >
         <ion-icon
           name={`bookmark${!showFavorites || !hasFavorites ? '-outline' : ''}`}

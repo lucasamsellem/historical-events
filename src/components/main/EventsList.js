@@ -1,32 +1,22 @@
 import Event from './Event';
-
 export { EventsList, FavoriteEventsList };
 
 function EventsList({
-  events,
-  era,
+  sortedFilteredEras,
   today,
   favoriteEvents,
   onFavoriteEvents,
   theme,
 }) {
-  const sortedFilteredEras = events
-    .filter((event) => {
-      if (!era) return true;
-      const [start, end] = era;
-      return event.year >= start && event.year <= end;
-    })
-    .sort((a, b) => a.year - b.year);
-
   return (
     <ul className="my-10 mb-20 grid grid-cols-1 gap-8 md:grid-cols-3">
-      {sortedFilteredEras.map((event) => (
+      {sortedFilteredEras.map(({ event, day, month, year }) => (
         <Event
-          key={event.event}
-          event={event.event}
-          day={event.day}
-          month={event.month}
-          year={event.year}
+          key={event}
+          event={event}
+          day={day}
+          month={month}
+          year={year}
           today={today}
           favoriteEvents={favoriteEvents}
           onFavoriteEvents={onFavoriteEvents}
@@ -38,6 +28,7 @@ function EventsList({
 }
 
 function FavoriteEventsList({
+  sortedFilteredEras,
   favoriteEvents,
   today,
   onFavoriteEvents,
@@ -45,13 +36,13 @@ function FavoriteEventsList({
 }) {
   return (
     <ul className="my-10 mb-20 grid grid-cols-1 gap-8 md:grid-cols-3">
-      {favoriteEvents.map((event) => (
+      {sortedFilteredEras.map(({ event, day, month, year }) => (
         <Event
-          key={event.event}
-          event={event.event}
-          day={event.day}
-          month={event.month}
-          year={event.year}
+          key={event}
+          event={event}
+          day={day}
+          month={month}
+          year={year}
           today={today}
           favoriteEvents={favoriteEvents}
           onFavoriteEvents={onFavoriteEvents}
