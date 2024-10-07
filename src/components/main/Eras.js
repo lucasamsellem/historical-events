@@ -1,27 +1,40 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import EraBtn from './EraBtn';
 
-export default function Eras({ onSetEra, eventsYear, today }) {
+export default function Eras({
+  today,
+  events,
+  onSetEraRange,
+  favoriteEvents,
+  showFavorites,
+  ascendingOrder,
+  onAscendingOrder,
+}) {
   const [activeEra, setActiveEra] = useState(null);
+  const selectedList = showFavorites ? favoriteEvents : events;
+  const before1600 = selectedList.some((event) => event.year < 1600);
+  const between1600And1900 = selectedList.some(
+    (event) => event.year >= 1600 && event.year <= 1900,
+  );
+  const after1900 = selectedList.some((event) => event.year > 1900);
+
+  useEffect(() => {
+    setActiveEra(null);
+    onSetEraRange(null);
+  }, [showFavorites, onSetEraRange]);
 
   const handleEraClick = (start, end, era) => {
     if (activeEra === era) {
-      onSetEra(null);
+      onSetEraRange(null);
       setActiveEra(null);
     } else {
-      onSetEra([start, end]);
+      onSetEraRange([start, end]);
       setActiveEra(era);
     }
   };
 
-  const before1600 = eventsYear.some((year) => year < 1600);
-  const between1600And1900 = eventsYear.some(
-    (year) => year >= 1600 && year <= 1900,
-  );
-  const after1900 = eventsYear.some((year) => year > 1900);
-
   return (
-    <div className="flex flex-col items-center justify-center gap-5 sm:flex-row sm:gap-16">
+    <div className="relative flex flex-col items-center justify-center gap-5 sm:flex-row sm:gap-16">
       {before1600 && (
         <EraBtn
           activeEra={activeEra}
@@ -51,6 +64,13 @@ export default function Eras({ onSetEra, eventsYear, today }) {
           era="1900 - today"
         />
       )}
+
+      <button
+        className={`absolute right-1 ml-auto flex transform text-3xl text-indigo-500 transition duration-300 ease-in-out ${ascendingOrder ? '' : 'rotate-180'}`}
+        onClick={() => onAscendingOrder(!ascendingOrder)}
+      >
+        <ion-icon name="arrow-down-circle-outline" />
+      </button>
     </div>
   );
 }

@@ -10,21 +10,21 @@ function Main({
   favoriteEvents,
   theme,
   setFavoriteEvents,
-  eventsYear,
   events,
   hasFavorites,
 }) {
-  const [era, setEra] = useState(null);
+  const [eraRange, setEraRange] = useState(null);
+  const [ascendingOrder, setAscendingOrder] = useState(true);
   const today = new Date().getFullYear();
 
-  function formatEras(events) {
+  function sortList(events) {
     return events
       .filter(({ year }) => {
-        if (!era) return true;
-        const [start, end] = era;
-        return year >= start && year <= end;
+        if (!eraRange) return true; // No era selected, return all events
+        const [start, end] = eraRange;
+        return year >= start && year <= end; // Filter by eraRange range
       })
-      .sort((a, b) => a.year - b.year);
+      .sort((a, b) => (ascendingOrder ? a.year - b.year : b.year - a.year));
   }
 
   return (
@@ -60,43 +60,35 @@ function Main({
           );
         }
 
-        if (showFavorites && hasFavorites) {
-          return (
-            <>
-              <Eras
-                theme={theme}
-                eventsYear={eventsYear}
-                era={era}
-                onSetEra={setEra}
-                today={today}
-              />
-              <FavoriteEventsList
-                favoriteEvents={favoriteEvents}
-                onFavoriteEvents={setFavoriteEvents}
-                today={today}
-                theme={theme}
-                sortedFilteredEras={formatEras(favoriteEvents)}
-              />
-            </>
-          );
-        }
-
         return (
           <>
             <Eras
-              theme={theme}
-              eventsYear={eventsYear}
-              era={era}
-              onSetEra={setEra}
               today={today}
-            />
-            <EventsList
+              events={events}
+              onSetEraRange={setEraRange}
+              showFavorites={showFavorites}
               favoriteEvents={favoriteEvents}
-              onFavoriteEvents={setFavoriteEvents}
-              today={today}
-              theme={theme}
-              sortedFilteredEras={formatEras(events)}
+              ascendingOrder={ascendingOrder}
+              onAscendingOrder={setAscendingOrder}
             />
+
+            {showFavorites && hasFavorites ? (
+              <FavoriteEventsList
+                theme={theme}
+                today={today}
+                favoriteEvents={favoriteEvents}
+                onFavoriteEvents={setFavoriteEvents}
+                sortedList={sortList(favoriteEvents)}
+              />
+            ) : (
+              <EventsList
+                theme={theme}
+                today={today}
+                favoriteEvents={favoriteEvents}
+                onFavoriteEvents={setFavoriteEvents}
+                sortedList={sortList(events)}
+              />
+            )}
           </>
         );
       })()}

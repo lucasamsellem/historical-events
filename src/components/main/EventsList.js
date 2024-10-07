@@ -2,7 +2,7 @@ import Event from './Event';
 export { EventsList, FavoriteEventsList };
 
 function EventsList({
-  sortedFilteredEras,
+  sortedList,
   today,
   favoriteEvents,
   onFavoriteEvents,
@@ -10,7 +10,7 @@ function EventsList({
 }) {
   return (
     <ul className="my-10 mb-20 grid grid-cols-1 gap-8 md:grid-cols-3">
-      {sortedFilteredEras.map(({ event, day, month, year }) => (
+      {sortedList.map(({ event, day, month, year }) => (
         <Event
           key={event}
           event={event}
@@ -28,7 +28,7 @@ function EventsList({
 }
 
 function FavoriteEventsList({
-  sortedFilteredEras,
+  sortedList,
   favoriteEvents,
   today,
   onFavoriteEvents,
@@ -36,7 +36,7 @@ function FavoriteEventsList({
 }) {
   return (
     <ul className="my-10 mb-20 grid grid-cols-1 gap-8 md:grid-cols-3">
-      {sortedFilteredEras.map(({ event, day, month, year }) => (
+      {sortedList.map(({ event, day, month, year }) => (
         <Event
           key={event}
           event={event}

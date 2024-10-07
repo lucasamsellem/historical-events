@@ -8,6 +8,7 @@ export default function FavoriteIcon({
   setIsUnknownKeyword,
 }) {
   useEffect(() => {
+    // hide favorites if there are no favorites
     if (!hasFavorites) onShowFavorites(false);
   }, [hasFavorites, showFavorites, onShowFavorites]);
 
