@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-// Todo : afficher theme favoris, era button active when only one choice
+// Todo : afficher keyword favoris, era button active when only one choice
 
 // COMPONENTS
 import Header from './components/header/Header';
@@ -10,8 +10,8 @@ import FetchData from './components/data/FetchData';
 import LocalStorage from './components/data/LocalStorage';
 
 export default function App() {
-  const [theme, setTheme] = useState('');
-  const [inputValue, setInputValue] = useState(theme);
+  const [keyword, setKeyword] = useState('');
+  const [inputValue, setInputValue] = useState(keyword);
   const [events, setEvents] = useState([]);
   const [eventsYear, setEventsYear] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -24,7 +24,7 @@ export default function App() {
   const hasFavorites = favoriteEvents.length > 0;
 
   FetchData({
-    theme,
+    keyword,
     setEvents,
     setIsLoading,
     setShowFavorites,
@@ -45,9 +45,9 @@ export default function App() {
       <Header
         inputValue={inputValue}
         trimmedInput={trimmedInput}
-        theme={theme}
+        keyword={keyword}
         setInputValue={setInputValue}
-        setTheme={setTheme}
+        setKeyword={setKeyword}
         searchHistory={searchHistory}
         setSearchHistory={setSearchHistory}
         setShowFavorites={setShowFavorites}
@@ -62,7 +62,7 @@ export default function App() {
         isUnknownKeyword={isUnknownKeyword}
         showFavorites={showFavorites}
         favoriteEvents={favoriteEvents}
-        theme={theme}
+        keyword={keyword}
         setFavoriteEvents={setFavoriteEvents}
         eventsYear={eventsYear}
         events={events}

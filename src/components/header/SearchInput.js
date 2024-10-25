@@ -1,19 +1,14 @@
 import { useState, useRef } from 'react';
-
 export { SearchInput, SearchHistoryIcon, SearchHistoryList };
 
-function SearchInput({ inputValue, trimmedInput, onInputValue, onSetTheme }) {
+function SearchInput({ inputValue, trimmedInput, onInputValue, onSetKeyword }) {
   const inputRef = useRef(null);
 
-  const handleButtonClick = (e) => {
+  function handleButtonClick(e) {
     e.preventDefault();
-
-    // Prevent empty spaces from being pushed to search history
-    if (trimmedInput !== '') onSetTheme(trimmedInput);
-
-    // Remove focus from the input field after clicking the search icon
+    if (trimmedInput !== '') onSetKeyword(trimmedInput);
     if (inputRef.current) inputRef.current.blur();
-  };
+  }
 
   return (
     <form className="flex items-center">
@@ -37,7 +32,7 @@ function SearchInput({ inputValue, trimmedInput, onInputValue, onSetTheme }) {
   );
 }
 
-function SearchHistoryIcon({ onInputValue, searchHistory, onSetTheme }) {
+function SearchHistoryIcon({ onInputValue, searchHistory, onSetKeyword }) {
   const [isDropdownVisible, setDropdownVisible] = useState(false);
   const hasHistory = searchHistory.length > 0;
 
@@ -57,7 +52,7 @@ function SearchHistoryIcon({ onInputValue, searchHistory, onSetTheme }) {
       {hasHistory && isDropdownVisible && (
         <SearchHistoryList
           onInputValue={onInputValue}
-          onSetTheme={onSetTheme}
+          onSetKeyword={onSetKeyword}
           searchHistory={searchHistory}
         />
       )}
@@ -65,26 +60,23 @@ function SearchHistoryIcon({ onInputValue, searchHistory, onSetTheme }) {
   );
 }
 
-function SearchHistoryList({ onInputValue, searchHistory, onSetTheme }) {
-  const clearSearchHistory = () => {
+function SearchHistoryList({ onInputValue, searchHistory, onSetKeyword }) {
+  function clearSearchHistory() {
     searchHistory.splice(0, searchHistory.length);
     localStorage.removeItem('searchHistory');
-  };
+  }
 
-  // Filter out empty strings before rendering the list
-  const filteredSearchHistory = searchHistory.filter(
-    (item) => item.keyword?.trim() !== '',
-  );
+  function handleSearchHistoryClick(keyword) {
+    onInputValue(keyword);
+    onSetKeyword(keyword);
+  }
 
   return (
     <ul className="mt:mb-20 absolute right-6 top-14 z-50 grid max-h-52 w-52 overflow-y-auto overflow-x-hidden rounded-lg border border-gray-200 bg-white shadow-lg">
-      {filteredSearchHistory
+      {searchHistory
         .map(({ keyword, time }, i) => (
           <li
-            onClick={() => {
-              onInputValue(keyword);
-              onSetTheme(keyword);
-            }}
+            onClick={() => handleSearchHistoryClick(keyword)}
             key={i}
             className="flex cursor-pointer items-center justify-between gap-6 px-4 py-2 hover:bg-gray-100"
           >

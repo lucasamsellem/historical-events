@@ -4,9 +4,9 @@ import { SearchHistoryIcon } from '../header/SearchInput';
 import FavoriteIcon from '../header/FavoriteIcon';
 
 function Header({
-  theme,
+  keyword,
   setInputValue,
-  setTheme,
+  setKeyword,
   searchHistory,
   setSearchHistory,
   inputValue,
@@ -30,9 +30,8 @@ function Header({
       <span className="relative flex items-center gap-2">
         <>
           <SearchInput
-            theme={theme}
             onInputValue={setInputValue}
-            onSetTheme={setTheme}
+            onSetKeyword={setKeyword}
             searchHistory={searchHistory}
             onSearchHistory={setSearchHistory}
             inputValue={inputValue}
@@ -42,7 +41,7 @@ function Header({
             inputValue={inputValue}
             searchHistory={searchHistory}
             onInputValue={setInputValue}
-            onSetTheme={setTheme}
+            onSetKeyword={setKeyword}
           />
         </>
         <FavoriteIcon

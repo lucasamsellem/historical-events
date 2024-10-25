@@ -1,102 +1,79 @@
 import { useState } from 'react';
-import { FavoriteEventsList } from './EventsList';
-import { EventsList } from './EventsList';
-import Eras from './Eras';
+import { FavoriteEventsList } from './events/EventsList';
+import { EventsList } from './events/EventsList';
+import Eras from './eras/Eras';
+import SortListOrderBtn from './events/SortListOrderBtn';
+import AppDescriptionMsg from './home/AppDescriptionMsg';
+import LoadingMsg from './home/LoadingMsg';
+import UnknownKeywordMsg from './home/UnknownKeywordMsg';
 
 function Main({
-  isLoading,
+  keyword,
   isUnknownKeyword,
+  isLoading,
   showFavorites,
   favoriteEvents,
-  theme,
   setFavoriteEvents,
-  eventsYear,
   events,
   hasFavorites,
 }) {
-  const [era, setEra] = useState(null);
-  const today = new Date().getFullYear();
+  const [eraRange, setEraRange] = useState(null);
+  const [ascendingOrder, setAscendingOrder] = useState(true);
+  const [activeEra, setActiveEra] = useState(null);
+  const yearToday = new Date().getFullYear();
 
-  function formatEras(events) {
-    return events
-      .filter(({ year }) => {
-        if (!era) return true;
-        const [start, end] = era;
-        return year >= start && year <= end;
-      })
-      .sort((a, b) => a.year - b.year);
-  }
+  const sortList = (events) =>
+    events
+      .filter(
+        ({ year }) => !eraRange || (year >= eraRange[0] && year <= eraRange[1]),
+      )
+      .sort((a, b) => (ascendingOrder ? a.year - b.year : b.year - a.year));
 
   return (
     <main className="mx-auto max-w-7xl flex-1 px-6">
       {(() => {
-        if (!theme && !showFavorites) {
-          return (
-            <p className="px-10 text-center font-medium">
-              Enter a country, landmark, influential figure, or notable topic in
-              the search bar to discover related historical events.
-            </p>
-          );
-        }
-
-        if (isLoading) {
-          return (
-            <p className="animate-bounce text-center font-semibold text-gray-900">
-              LOADING...
-            </p>
-          );
-        }
-
-        if (isUnknownKeyword) {
-          return (
-            <div className="text-center">
-              <p className="mb-5 font-semibold text-gray-900">
-                Unknown keyword...{' '}
-              </p>
-              <p className="italic opacity-50">
-                Examples: 'world war', 'france', 'shakespeare'
-              </p>
-            </div>
-          );
-        }
-
-        if (showFavorites && hasFavorites) {
-          return (
-            <>
-              <Eras
-                theme={theme}
-                eventsYear={eventsYear}
-                era={era}
-                onSetEra={setEra}
-                today={today}
-              />
-              <FavoriteEventsList
-                favoriteEvents={favoriteEvents}
-                onFavoriteEvents={setFavoriteEvents}
-                today={today}
-                theme={theme}
-                sortedFilteredEras={formatEras(favoriteEvents)}
-              />
-            </>
-          );
-        }
+        if (!keyword && !showFavorites) return <AppDescriptionMsg />;
+        if (isLoading) return <LoadingMsg />;
+        if (isUnknownKeyword) return <UnknownKeywordMsg />;
 
         return (
           <>
             <Eras
-              theme={theme}
-              eventsYear={eventsYear}
-              era={era}
-              onSetEra={setEra}
-              today={today}
-            />
-            <EventsList
+              yearToday={yearToday}
+              events={events}
+              onSetEraRange={setEraRange}
+              showFavorites={showFavorites}
               favoriteEvents={favoriteEvents}
-              onFavoriteEvents={setFavoriteEvents}
-              today={today}
-              theme={theme}
-              sortedFilteredEras={formatEras(events)}
+              ascendingOrder={ascendingOrder}
+              onAscendingOrder={setAscendingOrder}
+              activeEra={activeEra}
+              onActiveEra={setActiveEra}
             />
+
+            {!activeEra && (
+              <SortListOrderBtn
+                ascendingOrder={ascendingOrder}
+                onAscendingOrder={setAscendingOrder}
+              />
+            )}
+
+            {showFavorites && hasFavorites ? (
+              <FavoriteEventsList
+                keyword={keyword}
+                yearToday={yearToday}
+                favoriteEvents={favoriteEvents}
+                onFavoriteEvents={setFavoriteEvents}
+                sortedList={sortList(favoriteEvents)}
+              />
+            ) : (
+              <EventsList
+                keyword={keyword}
+                yearToday={yearToday}
+                favoriteEvents={favoriteEvents}
+                onFavoriteEvents={setFavoriteEvents}
+                sortedList={sortList(events)}
+              />
+            )}
           </>
         );
       })()}

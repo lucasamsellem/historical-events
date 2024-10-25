@@ -7,7 +7,7 @@ function LocalStorage({ setSearchHistory, setFavoriteEvents }) {
 
     if (storedHistory) setSearchHistory(JSON.parse(storedHistory));
     if (storedFavorites) setFavoriteEvents(JSON.parse(storedFavorites));
-  }, []);
+  }, [setSearchHistory, setFavoriteEvents]);
 }
 
 export default LocalStorage;

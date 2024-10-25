@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
+import setLocalStorage from './setLocalStorage';
 
 function FetchData({
-  theme,
+  keyword,
   setEvents,
   setIsLoading,
   setShowFavorites,
@@ -26,8 +27,8 @@ function FetchData({
       signal: abortController.signal,
     };
 
-    async function fetchData() {
-      if (!theme) return;
+    (async () => {
+      if (!keyword) return;
 
       setIsLoading(true);
       setIsUnknownKeyword(false);
@@ -35,45 +36,36 @@ function FetchData({
 
       try {
         const res = await fetch(
-          `https://api.api-ninjas.com/v1/historicalevents?text=${theme}`,
+          `https://api.api-ninjas.com/v1/historicalevents?text=${keyword}`,
           options,
         );
-
         const unknownKeyword = Number(res.headers.get('content-length')) === 2;
 
-        if (!unknownKeyword) {
-          const data = await res.json();
-          setEvents(data);
+        if (unknownKeyword) return setIsUnknownKeyword(true);
 
-          const years = data.map((event) => event.year);
-          setEventsYear(years);
+        const data = await res.json();
+        const years = data.map((event) => event.year);
+        setEvents(data);
+        setEventsYear(years);
+        setSearchHistory((prev) => {
+          const updatedHistory = [
+            ...prev,
+            { keyword: trimmedInput, time: now },
+          ];
 
-          setSearchHistory((prev) => {
-            const updatedHistory = [
-              ...prev,
-              { keyword: trimmedInput, time: now },
-            ];
+          setLocalStorage('searchHistory', updatedHistory);
 
-            localStorage.setItem(
-              'searchHistory',
-              JSON.stringify(updatedHistory),
-            );
-
-            return updatedHistory;
-          });
-        } else {
-          setIsUnknownKeyword(true);
-        }
+          return updatedHistory;
+        });
       } catch (error) {
         console.error('Fetching data failed:', error);
       } finally {
         setIsLoading(false);
       }
-    }
-    fetchData();
+    })();
 
     return () => abortController.abort();
-  }, [theme]);
+  }, [keyword]);
 }
 
 export default FetchData;
