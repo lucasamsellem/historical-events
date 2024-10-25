@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import setLocalStorage from './setLocalStorage';
+import setLocalStorage from '../../helper/setLocalStorage';
 
 function FetchData({
   keyword,

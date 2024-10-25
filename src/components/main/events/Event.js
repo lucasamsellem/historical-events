@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import setLocalStorage from '../../data/setLocalStorage';
+import setLocalStorage from '../../../helper/setLocalStorage';
+import { wikipediaPages } from '../../data/WikipediaPages';
 
 export default function Event({
   event,
@@ -7,30 +8,35 @@ export default function Event({
   month,
   year,
   yearToday,
-  favoriteEvents,
   onFavoriteEvents,
+  favoriteEvents,
 }) {
-  const [isFavorite, setIsFavorite] = useState(
-    favoriteEvents.some((fav) => fav.event === event),
-  );
+  const isFavoriteEvent = (events) => events.some((fav) => fav.event === event);
+  const [isFavorite, setIsFavorite] = useState(isFavoriteEvent(favoriteEvents));
 
   const handleFavorite = () => {
     setIsFavorite(!isFavorite);
 
     onFavoriteEvents((prev) => {
-      const isAlreadyFavorite = prev.some((fav) => fav.event === event);
-
-      const updatedFavorites = isAlreadyFavorite
-        ? prev.filter((fav) => fav.event !== event)
+      const updatedFavorites = isFavoriteEvent(prev)
+        ? prev.filter((fav) => fav.event !== event) // Avoid event duplications
         : [...prev, { event, day, month, year }];
 
-      updatedFavorites.length > 0
-        ? setLocalStorage('favoriteEvents', updatedFavorites)
-        : localStorage.removeItem('favoriteEvents');
+      setLocalStorage('favoriteEvents', updatedFavorites);
 
       return updatedFavorites;
     });
   };
+
+  // Implementing wikipedia link based on specific keywords
+  const formattedEvent = event
+    .split(' ')
+    .map((word) => word.replace(/[,:;.!]/g, '')) // Remove punctation
+    .join(' ');
+
+  const matchingWord = wikipediaPages.find((word) =>
+    formattedEvent.includes(word),
+  );
 
   return (
     <li className="grid h-fit gap-3 rounded-lg bg-indigo-500 p-5 text-white shadow-md transition-all">
@@ -59,9 +65,25 @@ export default function Event({
       </div>
       <p className="text-base font-medium">{event}</p>
 
-      <h5 className="mt-3 text-sm italic opacity-60">
-        {yearToday - year} years ago
-      </h5>
+      <div className="mt-3 flex items-center justify-between">
+        <h5 className="text-sm italic opacity-60">
+          {yearToday - year} years ago
+        </h5>
+
+        {matchingWord && (
+          <a
+            className="text-md flex rounded-full bg-white p-[0.4rem]"
+            href={`https://en.wikipedia.org/wiki/${matchingWord}`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            <ion-icon
+              name="search-outline"
+              style={{ color: 'rgb(99 102 241 / var(--tw-bg-opacity))' }}
+            />
+          </a>
+        )}
+      </div>
     </li>
   );
 }

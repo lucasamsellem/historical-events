@@ -22,12 +22,16 @@ function Main({
   const [activeEra, setActiveEra] = useState(null);
   const yearToday = new Date().getFullYear();
 
-  const sortList = (events) =>
+  const sortedList = (events) =>
     events
       .filter(
         ({ year }) => !eraRange || (year >= eraRange[0] && year <= eraRange[1]),
       )
       .sort((a, b) => (ascendingOrder ? a.year - b.year : b.year - a.year));
+
+  const sortedEvents = sortedList(events);
+  const sortedFavorites = sortedList(favoriteEvents);
+  const eventsNb = 3; // Minimal number of events to render SortListOrderBtn
 
   return (
     <main className="mx-auto max-w-7xl flex-1 px-6">
@@ -50,12 +54,13 @@ function Main({
               onActiveEra={setActiveEra}
             />
 
-            {!activeEra && (
-              <SortListOrderBtn
-                ascendingOrder={ascendingOrder}
-                onAscendingOrder={setAscendingOrder}
-              />
-            )}
+            {sortedEvents.length >= eventsNb &&
+              sortedFavorites.length >= eventsNb && (
+                <SortListOrderBtn
+                  ascendingOrder={ascendingOrder}
+                  onAscendingOrder={setAscendingOrder}
+                />
+              )}
 
             {showFavorites && hasFavorites ? (
               <FavoriteEventsList
@@ -63,7 +68,7 @@ function Main({
                 yearToday={yearToday}
                 favoriteEvents={favoriteEvents}
                 onFavoriteEvents={setFavoriteEvents}
-                sortedList={sortList(favoriteEvents)}
+                sortedList={sortedFavorites}
               />
             ) : (
               <EventsList
@@ -71,7 +76,7 @@ function Main({
                 yearToday={yearToday}
                 favoriteEvents={favoriteEvents}
                 onFavoriteEvents={setFavoriteEvents}
-                sortedList={sortList(events)}
+                sortedList={sortedEvents}
               />
             )}
           </>

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-// Todo : afficher keyword favoris, era button active when only one choice
+// Todo : afficher keyword favoris
 
 // COMPONENTS
 import Header from './components/header/Header';

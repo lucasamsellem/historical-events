@@ -78,7 +78,7 @@ function SearchHistoryList({ onInputValue, searchHistory, onSetKeyword }) {
           <li
             onClick={() => handleSearchHistoryClick(keyword)}
             key={i}
-            className="flex cursor-pointer items-center justify-between gap-6 px-4 py-2 hover:bg-gray-100"
+            className="flex cursor-pointer items-center justify-between gap-6 px-4 py-2 transition hover:bg-gray-100"
           >
             <strong>{keyword}</strong>
             <span className="text-sm text-gray-500">{time}</span>
@@ -88,7 +88,7 @@ function SearchHistoryList({ onInputValue, searchHistory, onSetKeyword }) {
 
       <button
         onClick={clearSearchHistory}
-        className="flex w-full items-center justify-center bg-red-100 py-2 text-xl text-red-600 hover:bg-red-200"
+        className="flex w-full items-center justify-center bg-red-100 py-2 text-xl text-red-600 transition hover:bg-red-200"
       >
         <ion-icon name="trash-outline" />
       </button>

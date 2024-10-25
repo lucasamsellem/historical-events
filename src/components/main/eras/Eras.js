@@ -45,21 +45,23 @@ export default function Eras({
     onActiveEra(isEraActive ? null : era);
   };
 
+  const eraBtnsToRender = eras.filter(({ condition }) =>
+    selectedList.some(({ year }) => condition(year)),
+  );
+
   return (
     <div className="mb-10 flex items-center justify-center gap-5 sm:relative sm:flex-row sm:gap-8">
-      {eras.map(
-        ({ era, start, end, condition }) =>
-          selectedList.some(({ year }) => condition(year)) && (
-            <EraBtn
-              key={era}
-              activeEra={activeEra}
-              handleEraClick={() => handleEraClick(start, end, era)}
-              era={era}
-              start={start}
-              end={end}
-            />
-          ),
-      )}
+      {eraBtnsToRender.map(({ era, start, end }) => (
+        <EraBtn
+          key={era}
+          activeEra={activeEra}
+          handleEraClick={() => handleEraClick(start, end, era)}
+          era={era}
+          start={start}
+          end={end}
+          eraBtnsToRender={eraBtnsToRender}
+        />
+      ))}
     </div>
   );
 }
