@@ -1,4 +1,4 @@
-function Examples() {
+function KeywordExamples() {
   return (
     <p className="italic opacity-50">
       Examples: 'world war', 'france', 'shakespeare', 'roman empire'...
@@ -6,4 +6,4 @@ function Examples() {
   );
 }
 
-export default Examples;
+export default KeywordExamples;

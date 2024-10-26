@@ -1,4 +1,4 @@
-import EarthIcon from './header/EarthIcon';
+import EarthIcon from './EarthIcon';
 
 function Footer() {
   return (

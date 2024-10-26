@@ -1,19 +1,16 @@
 import { useState } from 'react';
-
-// Todo : afficher keyword favoris
-
-// COMPONENTS
 import Header from './components/header/Header';
 import Main from './components/main/Main';
 import Footer from './components/Footer';
-import FetchData from './components/data/FetchData';
-import LocalStorage from './components/data/LocalStorage';
+import useFetchData from './hooks/useFetchData';
+import { useLocalStorage } from './hooks/useLocalStorage';
+
+// Todo : afficher keyword favoris
 
 export default function App() {
+  const [inputValue, setInputValue] = useState('');
   const [keyword, setKeyword] = useState('');
-  const [inputValue, setInputValue] = useState(keyword);
   const [events, setEvents] = useState([]);
-  const [eventsYear, setEventsYear] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isUnknownKeyword, setIsUnknownKeyword] = useState(false);
   const [favoriteEvents, setFavoriteEvents] = useState([]);
@@ -23,49 +20,41 @@ export default function App() {
   const trimmedInput = inputValue.trim();
   const hasFavorites = favoriteEvents.length > 0;
 
-  FetchData({
+  useFetchData(
     keyword,
     setEvents,
     setIsLoading,
     setShowFavorites,
     setIsUnknownKeyword,
     trimmedInput,
-    setInputValue,
-    setEventsYear,
     setSearchHistory,
-  });
+  );
 
-  LocalStorage({
-    setSearchHistory,
-    setFavoriteEvents,
-  });
+  useLocalStorage(setSearchHistory, setFavoriteEvents);
 
   return (
     <div className="flex min-h-screen flex-col">
       <Header
         inputValue={inputValue}
         trimmedInput={trimmedInput}
-        keyword={keyword}
-        setInputValue={setInputValue}
-        setKeyword={setKeyword}
+        onInputValue={setInputValue}
+        onKeyword={setKeyword}
         searchHistory={searchHistory}
-        setSearchHistory={setSearchHistory}
-        setShowFavorites={setShowFavorites}
+        onSearchHistory={setSearchHistory}
+        onShowFavorites={setShowFavorites}
         hasFavorites={hasFavorites}
         favoriteEvents={favoriteEvents}
         showFavorites={showFavorites}
-        setIsUnknownKeyword={setIsUnknownKeyword}
       />
 
       <Main
+        keyword={keyword}
+        events={events}
+        favoriteEvents={favoriteEvents}
         isLoading={isLoading}
         isUnknownKeyword={isUnknownKeyword}
         showFavorites={showFavorites}
-        favoriteEvents={favoriteEvents}
-        keyword={keyword}
-        setFavoriteEvents={setFavoriteEvents}
-        eventsYear={eventsYear}
-        events={events}
+        onFavoriteEvents={setFavoriteEvents}
         hasFavorites={hasFavorites}
       />
 

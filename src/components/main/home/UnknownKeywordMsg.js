@@ -1,4 +1,4 @@
-import Examples from './Examples';
+import Examples from './KeywordExamplesExamples';
 
 function UnknownKeywordMsg() {
   return (

@@ -1,57 +1,52 @@
-import EarthIcon from '../header/EarthIcon';
-import { SearchInput } from '../header/SearchInput';
-import { SearchHistoryIcon } from '../header/SearchInput';
-import FavoriteIcon from '../header/FavoriteIcon';
+import EarthIcon from '../EarthIcon';
+import { SearchInput } from './search/SearchInput';
+import { SearchHistoryIcon } from './search/SearchInput';
+import FavoriteIcon from './favorites/FavoriteIcon';
+import Title from './Title';
 
 function Header({
-  keyword,
-  setInputValue,
-  setKeyword,
-  searchHistory,
-  setSearchHistory,
   inputValue,
   trimmedInput,
+  onInputValue,
+  onKeyword,
+  searchHistory,
+  onSearchHistory,
   favoriteEvents,
   showFavorites,
-  setShowFavorites,
+  onShowFavorites,
   hasFavorites,
-  setIsUnknownKeyword,
 }) {
   return (
     <header className="mb-16 flex flex-col items-center justify-between gap-8 bg-indigo-500 py-4 sm:px-20 md:mb-20 md:flex-row md:px-8 lg:mb-20">
-      <span className="flex items-center justify-center gap-4">
+      <div className="flex items-center justify-center gap-4">
         <EarthIcon />
+        <Title showFavorites={showFavorites} />
+      </div>
 
-        <h1 className="text-2xl font-bold text-white md:text-lg lg:text-2xl">
-          {showFavorites ? 'Favorite Events' : 'Historical Events'}
-        </h1>
-      </span>
-
-      <span className="relative flex items-center gap-2">
+      <div className="relative flex items-center gap-2">
         <>
           <SearchInput
-            onInputValue={setInputValue}
-            onSetKeyword={setKeyword}
+            onInputValue={onInputValue}
+            onSetKeyword={onKeyword}
             searchHistory={searchHistory}
-            onSearchHistory={setSearchHistory}
+            onSearchHistory={onSearchHistory}
             inputValue={inputValue}
             trimmedInput={trimmedInput}
           />
           <SearchHistoryIcon
             inputValue={inputValue}
             searchHistory={searchHistory}
-            onInputValue={setInputValue}
-            onSetKeyword={setKeyword}
+            onInputValue={onInputValue}
+            onSetKeyword={onKeyword}
           />
         </>
         <FavoriteIcon
           favoriteEvents={favoriteEvents}
           showFavorites={showFavorites}
-          onShowFavorites={setShowFavorites}
+          onShowFavorites={onShowFavorites}
           hasFavorites={hasFavorites}
-          setIsUnknownKeyword={setIsUnknownKeyword}
         />
-      </span>
+      </div>
     </header>
   );
 }

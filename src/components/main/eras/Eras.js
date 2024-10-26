@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import EraBtn from './EraBtn';
 
 export default function Eras({
@@ -7,9 +7,8 @@ export default function Eras({
   onSetEraRange,
   favoriteEvents,
   showFavorites,
-  activeEra,
-  onActiveEra,
 }) {
+  const [activeEra, setActiveEra] = useState(null);
   const selectedList = showFavorites ? favoriteEvents : events;
 
   const eras = [
@@ -33,33 +32,33 @@ export default function Eras({
     },
   ];
 
-  // Reset era when user is on favorite events
+  // Reset era when user clicks on favorite events
   useEffect(() => {
-    onActiveEra(null);
+    setActiveEra(null);
     onSetEraRange(null);
-  }, [showFavorites, onSetEraRange, onActiveEra]);
+  }, [showFavorites, onSetEraRange, setActiveEra]);
 
-  const handleEraClick = (start, end, era) => {
+  const handleEra = (start, end, era) => {
     const isEraActive = activeEra === era;
     onSetEraRange(isEraActive ? null : [start, end]);
-    onActiveEra(isEraActive ? null : era);
+    setActiveEra(isEraActive ? null : era);
   };
 
-  const eraBtnsToRender = eras.filter(({ condition }) =>
+  const eraBtns = eras.filter(({ condition }) =>
     selectedList.some(({ year }) => condition(year)),
   );
 
   return (
     <div className="mb-10 flex items-center justify-center gap-5 sm:relative sm:flex-row sm:gap-8">
-      {eraBtnsToRender.map(({ era, start, end }) => (
+      {eraBtns.map(({ era, start, end }) => (
         <EraBtn
           key={era}
           activeEra={activeEra}
-          handleEraClick={() => handleEraClick(start, end, era)}
+          handleEra={() => handleEra(start, end, era)}
           era={era}
           start={start}
           end={end}
-          eraBtnsToRender={eraBtnsToRender}
+          eraBtns={eraBtns}
         />
       ))}
     </div>
