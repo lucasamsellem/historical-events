@@ -1,4 +1,4 @@
-function StarIcon({ handleFavorite, isFavorite }) {
+function StarBtn({ handleFavorite, isFavorite }) {
   return (
     <button className="p-1" onClick={handleFavorite}>
       <svg
@@ -20,4 +20,4 @@ function StarIcon({ handleFavorite, isFavorite }) {
   );
 }
 
-export default StarIcon;
+export default StarBtn;

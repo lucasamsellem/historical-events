@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { saveToLocalStorage } from '../../../hooks/useLocalStorage';
 import { WikipediaLinks } from './WikipediaLinks';
-import StarIcon from './StarIcon';
+import StarBtn from './buttons/StarBtn';
 
 export default function Event({
   event,
@@ -36,7 +36,7 @@ export default function Event({
         <h3 className="text-2xl font-semibold">
           {day}/{month}/{year}
         </h3>
-        <StarIcon handleFavorite={handleFavorite} isFavorite={isFavorite} />
+        <StarBtn handleFavorite={handleFavorite} isFavorite={isFavorite} />
       </div>
 
       <p className="text-base font-medium">{event}</p>

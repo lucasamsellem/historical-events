@@ -1,5 +1,5 @@
 import Event from './Event';
-import SortListOrderBtn from './SortListOrderBtn';
+import SortListOrderBtn from './buttons/SortListOrderBtn';
 export { EventsList };
 
 function EventsList({
