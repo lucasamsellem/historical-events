@@ -3,11 +3,11 @@ function EraBtn({ activeEra, handleEra, era, start, end, eraBtns }) {
 
   return (
     <button
-      className={`rounded-lg cursor-pointer px-[0.8rem] py-2 text-[0.8rem] font-semibold text-white transition sm:px-4 sm:text-lg ${
+      className={`rounded-lg px-[0.8rem] py-2 text-[0.8rem] font-semibold text-white transition sm:px-4 sm:text-lg ${
         activeEra === era || isSingleEraBtn
           ? 'bg-indigo-700'
           : 'bg-indigo-300 hover:bg-indigo-400'
-      } ${isSingleEraBtn ? 'cursor-not-allowed' : ''}`}
+      } ${isSingleEraBtn ? 'cursor-not-allowed' : 'cursor-pointer'}`}
       onClick={() => handleEra(start, end, era)}
       disabled={isSingleEraBtn}
     >

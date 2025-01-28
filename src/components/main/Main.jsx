@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { EventsList } from './events/EventsList';
 import Eras from './eras/ErasList';
-import AppDescriptionMsg from './home/AppDescriptionMsg';
-import LoadingMsg from './home/LoadingMsg';
-import UnknownKeywordMsg from './home/UnknownKeywordMsg';
+import PresentationMsg from '../messages/PresentationMsg';
+import UnknownKeywordMsg from '../messages/UnknownKeywordMsg';
+import Loader from '../icons/Loader';
 
 function Main({
   keyword,
@@ -16,51 +16,36 @@ function Main({
   hasFavorites,
 }) {
   const [eraRange, setEraRange] = useState(null);
-  const [ascendingOrder, setAscendingOrder] = useState(true);
   const yearToday = new Date().getFullYear();
-
-  const sortList = (events) =>
-    events
-      .filter(
-        ({ year }) => !eraRange || (year >= eraRange[0] && year <= eraRange[1])
-      )
-      .sort((a, b) => (ascendingOrder ? a.year - b.year : b.year - a.year));
-
-  const isFavoritesList =
-    isFavoritesSection && hasFavorites
-      ? sortList(favoriteEvents)
-      : sortList(events);
 
   return (
     <main className="mx-auto max-w-7xl flex-1 px-6">
-      {(() => {
-        if (!keyword && !isFavoritesSection) return <AppDescriptionMsg />;
-        if (isLoading) return <LoadingMsg />;
-        if (isUnknownKeyword && !isFavoritesSection)
-          return <UnknownKeywordMsg />;
+      {!keyword && !isFavoritesSection && <PresentationMsg />}
+      {isLoading && <Loader />}
+      {isUnknownKeyword && !isFavoritesSection && <UnknownKeywordMsg />}
 
-        return (
-          <>
-            <Eras
-              yearToday={yearToday}
-              events={events}
-              onSetEraRange={setEraRange}
-              isFavoritesSection={isFavoritesSection}
-              favoriteEvents={favoriteEvents}
-            />
+      {!isLoading && !isUnknownKeyword && (
+        <>
+          <Eras
+            yearToday={yearToday}
+            events={events}
+            onSetEraRange={setEraRange}
+            isFavoritesSection={isFavoritesSection}
+            favoriteEvents={favoriteEvents}
+          />
 
-            <EventsList
-              keyword={keyword}
-              yearToday={yearToday}
-              favoriteEvents={favoriteEvents}
-              onFavoriteEvents={onFavoriteEvents}
-              sortedList={isFavoritesList}
-              ascendingOrder={ascendingOrder}
-              onAscendingOrder={setAscendingOrder}
-            />
-          </>
-        );
-      })()}
+          <EventsList
+            events={events}
+            keyword={keyword}
+            eraRange={eraRange}
+            yearToday={yearToday}
+            isFavoritesSection={isFavoritesSection}
+            favoriteEvents={favoriteEvents}
+            onFavoriteEvents={onFavoriteEvents}
+            hasFavorites={hasFavorites}
+          />
+        </>
+      )}
     </main>
   );
 }

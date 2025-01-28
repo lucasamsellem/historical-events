@@ -1,22 +1,38 @@
+import { useState } from 'react';
 import EventCard from './EventCard';
 import SortListBtn from './buttons/SortListBtn';
 export { EventsList };
 
 function EventsList({
+  events,
   keyword,
-  sortedList,
+  eraRange,
   yearToday,
+  isFavoritesSection,
   favoriteEvents,
+  hasFavorites,
   onFavoriteEvents,
-  ascendingOrder,
-  onAscendingOrder,
 }) {
+  const [ascendingOrder, setAscendingOrder] = useState(true);
+
+  const sortList = (events) =>
+    events
+      .filter(
+        ({ year }) => !eraRange || (year >= eraRange[0] && year <= eraRange[1])
+      )
+      .sort((a, b) => (ascendingOrder ? a.year - b.year : b.year - a.year));
+
+  const sortedList =
+    isFavoritesSection && hasFavorites
+      ? sortList(favoriteEvents)
+      : sortList(events);
+
   return (
     <>
       {sortedList.length >= 5 && (
         <SortListBtn
           ascendingOrder={ascendingOrder}
-          onAscendingOrder={onAscendingOrder}
+          onAscendingOrder={setAscendingOrder}
         />
       )}
 

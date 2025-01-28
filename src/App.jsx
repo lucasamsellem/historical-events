@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Header from './components/header/Header';
 import Main from './components/main/Main';
-import Footer from './components/footer/Footer';
+import EarthIcon from './components/icons/EarthIcon';
 import useFetchData from './hooks/useFetchData';
 import { useLocalStorage } from './hooks/useLocalStorage';
 
@@ -17,7 +17,6 @@ export default function App() {
   const [isFavoritesSection, setIsFavoritesSection] = useState(false);
   const [searchHistory, setSearchHistory] = useState([]);
 
-  // Derived
   const trimmedInput = inputValue.trim();
   const hasFavorites = favoriteEvents.length > 0;
 
@@ -34,7 +33,7 @@ export default function App() {
   useLocalStorage(setSearchHistory, setFavoriteEvents);
 
   return (
-    <div className='flex min-h-screen flex-col'>
+    <div className="flex min-h-screen flex-col">
       <Header
         inputValue={inputValue}
         trimmedInput={trimmedInput}
@@ -59,7 +58,9 @@ export default function App() {
         hasFavorites={hasFavorites}
       />
 
-      <Footer />
+      <footer className="flex justify-center bg-indigo-500 py-2 text-center">
+        <EarthIcon />
+      </footer>
     </div>
   );
 }

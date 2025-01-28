@@ -1,5 +1,5 @@
-import EarthIcon from '../footer/EarthIcon';
-import SearchInput from './search/SearchInput';
+import EarthIcon from '../icons/EarthIcon';
+import SearchInput from './searchbar/SearchInput';
 import FavoriteIcon from './FavoriteBtn';
 
 function Header({

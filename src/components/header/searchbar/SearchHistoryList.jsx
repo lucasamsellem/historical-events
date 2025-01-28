@@ -7,9 +7,10 @@ function SearchHistoryList({
   function clearSearchHistory() {
     searchHistory.splice(0, searchHistory.length);
     localStorage.removeItem('searchHistory');
+    onIsDropdownActive(false);
   }
 
-  // Add history keyword to the search input
+  // Add clicked keyword to the search input
   function handleSearchHistory(keyword) {
     onInputValue(keyword);
     onKeyword(keyword);
@@ -33,7 +34,7 @@ function SearchHistoryList({
 
       <button
         onClick={clearSearchHistory}
-        className="flex w-full items-center justify-center bg-red-100 py-2 text-xl text-red-600 transition hover:bg-red-200"
+        className="flex w-full cursor-pointer items-center justify-center bg-red-100 py-2 text-xl text-red-600 transition hover:bg-red-200"
       >
         <ion-icon name="trash-outline" />
       </button>
